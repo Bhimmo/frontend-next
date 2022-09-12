@@ -62,13 +62,14 @@ export default function Login() {
                     />
                     <FormControl
                         color="success"
+                        variant="standard"
                         fullWidth={true}
-                    >
+                        required={true} 
+                        >
                         <InputLabel>Senha</InputLabel>
                         <Input
-                            id="standard-adornment-password"
+                            id="senha"
                             name="senha"
-                            required={true}
                             type={values.showPassword ? 'text' : 'password'}
                             value={values.password}
                             onChange={handleChange('password')}

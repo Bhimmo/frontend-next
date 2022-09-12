@@ -5,7 +5,7 @@
 }
 .imagemHome {
     height: 100%;
-    border-radius: 8px 0px 40px 40px;
+    border-radius: 0px 0px 40px 40px;
     background-image: url("../public/images/igreja_remaster.jpg");
     background-size: cover;
     background-repeat: no-repeat;

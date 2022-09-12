@@ -72,6 +72,8 @@ export default function Login() {
                     />
                     <FormControl
                         color="success"
+                        variant="standard"
+                        required={true}
                         fullWidth={true}
                     >
                         <InputLabel>Senha</InputLabel>
