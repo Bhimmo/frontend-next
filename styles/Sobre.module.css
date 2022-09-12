@@ -1,0 +1,11 @@
+.divImageAbout {
+    height: 45vh;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+.imagemAbout {
+    height: 100%;
+    background-image: url("../public/images/zyro-image2.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: bottom;
+}
