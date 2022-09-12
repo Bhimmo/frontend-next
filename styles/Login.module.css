@@ -1,0 +1,44 @@
+.fundo {
+    background: url('../public/images/zyro-image.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.divForm {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 35px;
+    padding-bottom: 26px;
+    width: 60vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+}
+
+.textCentral {
+    margin: 5px;
+    color: #388659;
+    font-weight: bold;
+    text-align: center;
+}
+.botaoSubmit {
+    text-align: center;
+    width: 30vh;
+}
+.botaoSubmit:hover {
+    background-color: #52AA5E;
+}
+.textPequeno {
+    margin-top: 20px;
+}

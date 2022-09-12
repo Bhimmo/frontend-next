@@ -1,0 +1,51 @@
+.divImage {
+    height: 70vh;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    border-radius: 8px 0px 40px 40px;
+}
+.imagemHome {
+    height: 100%;
+    border-radius: 8px 0px 40px 40px;
+    background-image: url("../public/images/igreja_remaster.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: bottom;
+}
+
+.linha {
+    height: 1px;
+    width: 120px;
+    border: 1px solid #666276
+}
+/* Restaurantes */
+.restauranteApresentacao {
+    background-image: linear-gradient(to bottom, transparent 0%, #000 150%), url("../public/images/fotoRestaurante.jpg");
+    background-size: cover;
+}
+.card:hover{
+    transition-duration: 0.5s;
+    transform: scale(0.98);
+}
+/* Hoteis */
+.hoteisApresentacao {
+    background-image: linear-gradient(to bottom, transparent 0%, #000 150%), url("../public/images/hotel.jpg");
+    background-size: cover;
+}
+.iconHotel:hover {
+    animation: slide1 1s ease-in-out infinite;
+}
+
+@keyframes slide1 {
+    0%, 100% {
+        transform: translate(0, 0);
+    }
+    50% {
+        transform: translate(10px, 0);
+    }
+}
+
+@media(max-width: 770px) {
+    .divImage {
+        height: 40vh;
+    }
+}

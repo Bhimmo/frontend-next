@@ -1,0 +1,12 @@
+.formFooter {
+    display: flex;
+    align-items: center;
+}
+.inputNot {
+    width: 40vh;
+    border-radius: 4px;
+    background-color: #fff;
+}
+.itemFooter {
+    text-decoration: none;
+}

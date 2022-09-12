@@ -1,0 +1,16 @@
+.likeComentario:hover {
+    animation: tremelike 0.5s;
+    animation-iteration-count: 1;
+}
+
+.deslikeComentario:hover {
+    scale: 1.1;
+}
+
+@keyframes tremelike {
+    0% {rotate: 0}
+    45% {rotate: 25deg}
+    50% {rotate: 0}
+    75% {rotate: -25deg}
+    100% {rotate: 0}
+}

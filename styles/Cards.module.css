@@ -1,0 +1,34 @@
+.restauranteApresentacao {
+    background-image: linear-gradient(to bottom, transparent 0%, #000 150%), url("../public/images/fotoRestaurante.jpg");
+    background-size: cover;
+}
+.restauranteApresentacao:hover {
+    transition-duration: 0.5s;
+    transform: scale(0.98);
+}
+
+.iconHotel:hover {
+    animation: slide1 1s ease-in-out infinite;
+}
+
+.imgEstabelecimentos {
+    width: 30vh;
+    height: 100%;
+    background-image: url("../public/images/hotel.jpg");
+    background-size: cover;
+    border-radius: 5px 0px 0px 5px;
+}
+
+.divCard:hover {
+    transition-duration: 1s;
+    transform: translate(0px, -5px);
+}
+
+@keyframes slide1 {
+    0%, 100% {
+        transform: translate(0, 0);
+    }
+    50% {
+        transform: translate(10px, 0);
+    }
+}

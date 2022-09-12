@@ -1,0 +1,29 @@
+.logar {
+    display: flex;
+    align-items: center;
+
+    text-decoration: none;
+    padding: 5px;
+    border-radius: 4px;
+    color: green;
+    background-color: #fff;
+}
+
+.navs {
+    margin: 5px;
+    padding: 8px;
+    text-decoration: none;
+    color: #eeeeee;
+    border-bottom: 2px solid #2d6a4f;
+}
+.navList {
+    display: flex;
+    list-style: none;
+}
+
+.textHome {
+    font-weight: bold;
+    text-decoration: none;
+    color: #fff;
+    font-size: 25px;
+}
