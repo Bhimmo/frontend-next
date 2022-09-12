@@ -37,6 +37,7 @@ async function salvarUsuario(user) {
     if (data.status === 200) {
         let newUser = {
             id: data.data._id,
+            nome: data.data.nome,
             email: user.email,
             senha: user.senha
         }

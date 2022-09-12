@@ -5,13 +5,12 @@ import { deslogar, pegarLetraAvatar, verificarLogin } from "../hooks/usuario/log
 import styles from "../styles/Header.module.css";
 
 export default function Header() {
-    const [logado, setLogado] = useState();
-    useEffect(() => {
-        if (!logado) {
-            setLogado(verificarLogin())
-        }
-    }, [logado])
-    const letra = pegarLetraAvatar(logado);
+    var user;
+    var letra;
+    if (typeof window !== "undefined") {
+        user = verificarLogin();
+        letra = pegarLetraAvatar(user);
+    }
     const [menu, setMenu] = useState(false);
     const open = Boolean(menu);
 
@@ -45,12 +44,12 @@ export default function Header() {
                         <li><a className={styles.navs} href="/eventos">Eventos</a></li>
                     </ul>
                 </nav>
-                {logado &&
+                {user &&
                     <IconButton onClick={abrirMenu}>
                         <Avatar>{letra}</Avatar>
                     </IconButton>
                 }
-                {!logado &&
+                {!user &&
                     <div className="teste">
                         <a className={styles.logar} href="/login">Entrar <PersonAddAlt sx={{marginLeft: 2}} /> </a>
                     </div>
