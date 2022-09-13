@@ -7,6 +7,7 @@ import Card from "../components/cards/eventos";
 import usePaginacao from "../hooks/paginacao/ordenar";
 import { Alert, Box, Container, Pagination } from "@mui/material";
 import { Close } from "@mui/icons-material";
+import Head from "next/head";
 
 export default function Eventos() {
     const [valuePagina, setValuePagina] = useState(0);
@@ -65,6 +66,9 @@ export default function Eventos() {
     }
     return (
         <Box>
+            <Head>
+                <title>Eventos - Turismo campo mourao</title>
+            </Head>
             <Header />
             <Filtro evento={true} filtroData={meuFiltroDatas} filtro={meuFiltro} />
             {data.length > 0 &&

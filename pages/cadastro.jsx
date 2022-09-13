@@ -4,6 +4,7 @@ import { criarUsuario } from "../hooks/usuario/login";
 import InputCustumizado from "../components/input";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import styles from "../styles/Login.module.css"
+import Head from "next/head";
 
 export default function Login() {
     const [error, setError] = useState(false);
@@ -48,6 +49,9 @@ export default function Login() {
 
     return (
         <div className={styles.fundo}>
+            <Head>
+                <title>Registrar - Turismo campo mourao</title>
+            </Head>
             <div className={styles.divForm}>
                 <Typography className={styles.textCentral} variant="h4">Cadastre-se</Typography>
                 <form className={styles.form} onSubmit={enviar}>

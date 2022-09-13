@@ -5,11 +5,15 @@ import styles from "../styles/Home.module.css";
 import useFecth from "../hooks/useFecth";
 import ApresentacaoRestaurantes from "../components/cards/restaurantes/apresentacao";
 import ApresentacaoHoteis from "../components/cards/hoteis/apresentacao";
+import Head from "next/head";
 
 export default function Home() {
     const data = useFecth("/estabelecimentos/home/two").data;
     return (
         <div>
+            <Head>
+                <title>Turismo campo mourao</title>
+            </Head>
             <Header />
             <Box className={styles.divImage}>
                 <Box className={styles.imagemHome}></Box>

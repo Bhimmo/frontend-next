@@ -5,6 +5,7 @@ async function salvarEvento(evento) {
         const result = await requisicaoApi("eventos", "POST", {
             nome: evento.nome,
             descricao: evento.descricao,
+            usuarioId: evento.usuarioId,
             dataInicial: evento.dataInicial,
             dataFinal: evento.dataFinal,
             valor: evento.valor,

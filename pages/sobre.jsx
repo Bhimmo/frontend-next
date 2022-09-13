@@ -1,4 +1,5 @@
 import { Box, Container, Typography } from "@mui/material";
+import Head from "next/head";
 import Footer from "../components/footer";
 import Header from "../components/header";
 import styles from "../styles/Sobre.module.css";
@@ -6,6 +7,9 @@ import styles from "../styles/Sobre.module.css";
 export default function About() {
     return (
       <div>
+        <Head>
+            <title>Sobre - Turismo campo mourao</title>
+        </Head>
         <Header />
             <Box className={styles.divImageAbout}>
                 <Box className={styles.imagemAbout}/>

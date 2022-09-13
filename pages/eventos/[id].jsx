@@ -8,6 +8,8 @@ import { useRouter } from "next/router";
 import useFetch from "../../hooks/useFecth";
 import { useEffect, useState } from "react";
 import { LocalAtm, Web } from "@mui/icons-material";
+import Image from "next/image";
+import Head from "next/head";
 
 var items = [
     {
@@ -51,10 +53,13 @@ export default function DetalhesEventos() {
     }, [dataComent, dataComentarios])
  
     return (
-        <Box>    
+        <Box>
             <Header />
             {data &&
             <Container sx={{marginBottom: 5}}>
+                <Head>
+                    <title>{data.nome} - Campo Mourao</title>
+                </Head>
                 <Box sx={{display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", marginTop: 5}}>
                     <Typography sx={{textAlign: "center"}} variant="h3">{data.nome}</Typography>
                     <Chip sx={{marginTop: 3}} color={status.color} label={status.status} />
@@ -63,9 +68,9 @@ export default function DetalhesEventos() {
                 <Carrosel sx={{marginTop: 5, width: "100%"}}>
                     {items.map((item, index) => (
                         <Box key={index} sx={{display: "flex", justifyContent: "center"}}>
-                            <img alt="Eventos" src={item.img} style={{maxHeight: 300, maxWidth: 300, margin: 5}} />
-                            <img alt="Eventos" src={item.img} style={{maxHeight: 300, maxWidth: 300}} />
-                            <img alt="Eventos" src={item.img} style={{maxHeight: 300, maxWidth: 300, margin: 5}} />
+                            <Image alt="Eventos" src="/images/fotoRestaurante.jpg" width="250px" height="250px" />
+                            <Image alt="Eventos" src="/images/fotoRestaurante.jpg" width="250px" height="250px" />
+                            <Image alt="Eventos" src="/images/fotoRestaurante.jpg" width="250px" height="250px" />
                         </Box>
                     ))}
                 </Carrosel>

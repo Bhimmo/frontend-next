@@ -1,23 +1,27 @@
-import { Alert, Avatar, Box, Button, Container, Paper, Snackbar, Typography } from "@mui/material";
+import { Alert, Avatar, Box, Button, Container, Input, Paper, Snackbar, Typography } from "@mui/material";
 import Header from "../components/header";
-import Footer from "../components/footer";
 import FormularioEvento from "../components/eventos/criar";
 import { useState } from "react";
+import TableEventos from "../components/table";
 import useFetch from "../hooks/useFecth";
 import { verificarLogin } from "../hooks/usuario/login";
-import { Cake } from "@mui/icons-material";
+import { Cake, Image } from "@mui/icons-material";
+import Head from "next/head";
 
 export default function Perfil() {
     const [open, setOpen] = useState(false);
     const [eventoCriado, setEventoCriado] = useState({open: false, vertical: "bottom", horizontal: "center"})
     const { vertical, horizontal } = eventoCriado;
+    const [imgPerfil, setImgPerfil] = useState();
     var data;
+    var meusEventos;
     if (typeof window !== "undefined") {
         const user = verificarLogin();
         if (!user) {
             window.location.href = "/";
         }
         data = useFetch("usuarios/"+user.id).data;
+        meusEventos = useFetch("eventos/usuario/"+user.id).data;
         
         var date = new Date(data.createdAt);
         var dia = String(date.getDate()).padStart(2, '0');
@@ -37,14 +41,33 @@ export default function Perfil() {
         setEventoCriado({open: false, vertical: "bottom", horizontal: "center"})
     }
 
+    function verImage(event) {
+        const file = event.target.files[0];
+
+        const reader = new FileReader();
+        
+        reader.addEventListener('load', (e) => {
+            setImgPerfil(e.target.result);
+        })
+        reader.readAsDataURL(file);
+    }
 
     return (
         <Box sx={{marginBottom: 5}}>
+            <Head>
+                <title>Perfil - Turismo campo mourao</title>
+            </Head>
             <Header />
             {data &&
             <Container sx={{display: "flex", alignItems: "center", flexDirection: "column", marginTop: 5}}>
-                <Avatar sx={{width: "100px", height: "100px"}} />
-                <Typography sx={{marginTop: 5}} variant="h3">{data.nome}</Typography>
+                <Avatar onChange={verImage} src={imgPerfil} sx={{width: "200px", height: "200px"}} />
+                <label>
+                    <Avatar sx={{marginTop: 2, bgcolor: "#3D8361"}} variant="rounded">
+                        <Image />
+                        <Input sx={{display: "none"}} onChange={verImage} type="file" />
+                    </Avatar>
+                </label>
+                <Typography sx={{marginTop: 2}} variant="h3">{data.nome}</Typography>
 
                 <Box sx={{display: "flex", alignItems: "center"}}>
                     <Cake sx={{marginBottom: "5px"}} fontSize="small" />
@@ -68,6 +91,10 @@ export default function Perfil() {
                         Evento criado — <strong>já está disponível na lista de eventos!</strong>
                     </Alert>
                 </Snackbar>
+
+                {meusEventos && meusEventos.length > 0 &&
+                    <TableEventos eventos={meusEventos} />
+                }
             </Container>
             }
         </Box>
