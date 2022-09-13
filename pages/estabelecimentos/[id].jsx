@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import useFetch from "../../hooks/useFecth";
 import { Language, Phone, Signpost } from "@mui/icons-material";
+import Head from "next/head";
 
 var items = [
     {
@@ -46,6 +47,9 @@ export default function DetalhesEstabelecimentos() {
         <Box>
             {data && data._id &&
                 <Box>
+                    <Head>
+                        <title>{data.nome} - Campo Mourao</title>
+                    </Head>
                     <Header />
                     <Container sx={{marginBottom: 5}}>
                         <Typography sx={{textAlign: "center", marginTop: 5}} variant="h3">{data.nome}</Typography>

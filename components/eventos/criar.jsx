@@ -1,11 +1,15 @@
 import { Box, Button, Checkbox, Divider, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 import { salvarEvento } from "../../hooks/eventos/salvar";
+import { verificarLogin } from "../../hooks/usuario/login";
 import Input from "../input";
 
 export default function CriarEvento(props) {
     const [online, setOnline] = useState(false);
-    //const [presencial, setPresencial] = useState(true);
+
+    if (typeof window !== "undefined") {
+        var user = verificarLogin();
+    }
 
     function eventoOnline() {
         if (online) {
@@ -25,6 +29,7 @@ export default function CriarEvento(props) {
             dataInicial: form.get('dataInicial'),
             dataFinal: form.get('dataFinal'),
             onlineUrl: form.get('linkEvento'),
+            usuarioId: user.id,
             endereco: {
                 bairro: form.get('bairro'),
                 logradouro: form.get('logradouro'),

@@ -7,6 +7,7 @@ import usePaginacao from "../hooks/paginacao/ordenar";
 import useFetch from "../hooks/useFecth";
 import { useState } from "react";
 import { Close } from "@mui/icons-material";
+import Head from "next/head";
 export default function Estabelecimentos() {
     const { data, isLoading, error, setError } = useFetch("estabelecimentos");
     const [valuePagina, setValuePagina] = useState(0);
@@ -63,6 +64,9 @@ export default function Estabelecimentos() {
 
     return (
         <div>
+            <Head>
+                <title>Estabelecimentos - Turismo campo mourao</title>
+            </Head>
             <Header />
             <Filtro filtroCategorias={filtroCategorias} filtroBusca={filtroBusca} estabelecimento={true} />
             <Box sx={{backgroundColor: "#EBEBEB", borderRadius: "19px", boxShadow: "rgba(0,0,0,0.35) 0px 5px 15px"}}>
