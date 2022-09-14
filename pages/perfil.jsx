@@ -92,9 +92,13 @@ export default function Perfil() {
                     </Alert>
                 </Snackbar>
 
-                {meusEventos && meusEventos.length > 0 &&
+                {meusEventos && meusEventos.length > 0 ? (
                     <TableEventos eventos={meusEventos} />
-                }
+                ) : (
+                    <Typography fontWeight="bold" variant="body1" sx={{marginTop: 5}}>
+                        Nenhum evento econtrado para esse usuario
+                    </Typography>
+                )}
             </Container>
             }
         </Box>
