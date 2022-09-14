@@ -5,12 +5,17 @@ import { deslogar, pegarLetraAvatar, verificarLogin } from "../hooks/usuario/log
 import styles from "../styles/Header.module.css";
 
 export default function Header() {
-    var user;
-    var letra;
-    if (typeof window !== "undefined") {
-        user = verificarLogin();
-        letra = pegarLetraAvatar(user);
-    }
+    const [user, setUser] = useState(undefined);
+    const [letra, setLetra] = useState(false);
+    useEffect(() => {
+        let usuario = verificarLogin();
+        if (usuario && !letra) {
+            const l = pegarLetraAvatar(user);
+            setLetra(l);
+            setUser(usuario);
+        }
+    })
+
     const [menu, setMenu] = useState(false);
     const open = Boolean(menu);
 

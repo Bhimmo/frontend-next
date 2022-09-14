@@ -8,7 +8,6 @@ import { useRouter } from "next/router";
 import useFetch from "../../hooks/useFecth";
 import { useEffect, useState } from "react";
 import { LocalAtm, Web } from "@mui/icons-material";
-import Image from "next/image";
 import Head from "next/head";
 
 var items = [
@@ -68,9 +67,9 @@ export default function DetalhesEventos() {
                 <Carrosel sx={{marginTop: 5, width: "100%"}}>
                     {items.map((item, index) => (
                         <Box key={index} sx={{display: "flex", justifyContent: "center"}}>
-                            <Image alt="Eventos" src="/images/fotoRestaurante.jpg" width="250px" height="250px" />
-                            <Image alt="Eventos" src="/images/fotoRestaurante.jpg" width="250px" height="250px" />
-                            <Image alt="Eventos" src="/images/fotoRestaurante.jpg" width="250px" height="250px" />
+                            <img alt="Eventos" src={item.img} style={{maxHeight: 300, maxWidth: 300, margin: 5}} />
+                            <img alt="Eventos" src={item.img} style={{maxHeight: 300, maxWidth: 300}} />
+                            <img alt="Eventos" src={item.img} style={{maxHeight: 300, maxWidth: 300, margin: 5}}/>
                         </Box>
                     ))}
                 </Carrosel>
@@ -90,7 +89,7 @@ export default function DetalhesEventos() {
                         {data.onlineUrl &&
                             <Box sx={{display: "flex", alignItems: "center", marginTop: 1}}>
                                 <Web fontSize="small" />
-                                <a target="blank" style={{textDecoration: "none", color: "rgba(0, 0, 0, 0.87)"}} href={data.onlineUrl}><Typography variant="body2">Transmicao: <strong>{data.onlineUrl}</strong></Typography></a>
+                                <a target="blank" style={{textDecoration: "none", color: "rgba(0, 0, 0, 0.87)"}} href={"https://" + data.onlineUrl}><Typography variant="body2">Transmicao: <strong>{data.onlineUrl}</strong></Typography></a>
                             </Box>
                         }
                     </Paper>

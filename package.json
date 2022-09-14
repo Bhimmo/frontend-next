@@ -12,6 +12,7 @@
     "axios": "^0.27.2",
     "@mui/material": "^5.10.0",
     "@mui/icons-material": "^5.8.4",
-    "react-material-ui-carousel": "^3.4.2"
+    "react-material-ui-carousel": "^3.4.2",
+    "next-pwa": "^5.6.0"
   }
 }
