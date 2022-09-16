@@ -5,6 +5,7 @@ import { useState } from "react";
 import TableEventos from "../components/table";
 import useFetch from "../hooks/useFecth";
 import { verificarLogin } from "../hooks/usuario/login";
+import { salvarImage } from "../hooks/images/salvar";
 import { Cake, Image } from "@mui/icons-material";
 import Head from "next/head";
 
@@ -13,10 +14,13 @@ export default function Perfil() {
     const [eventoCriado, setEventoCriado] = useState({open: false, vertical: "bottom", horizontal: "center"})
     const { vertical, horizontal } = eventoCriado;
     const [imgPerfil, setImgPerfil] = useState();
+    const [errorImagem, setErrorImagem]= useState(false);
+
     var data;
     var meusEventos;
+    var imagemMostrar;
     if (typeof window !== "undefined") {
-        const user = verificarLogin();
+        var user = verificarLogin();
         if (!user) {
             window.location.href = "/";
         }
@@ -28,6 +32,8 @@ export default function Perfil() {
         var mes = String(date.getMonth() + 1).padStart(2, '0');
         var ano = date.getFullYear()
         var dataAtual = dia + "/" + mes + "/" + ano;
+
+        imagemMostrar = imgPerfil || data.avatar_url;
     }
 
     function openEvento() {
@@ -41,15 +47,23 @@ export default function Perfil() {
         setEventoCriado({open: false, vertical: "bottom", horizontal: "center"})
     }
 
-    function verImage(event) {
+    async function verImage(event) {
         const file = event.target.files[0];
 
         const reader = new FileReader();
-        
-        reader.addEventListener('load', (e) => {
-            setImgPerfil(e.target.result);
-        })
-        reader.readAsDataURL(file);
+        var irBackend = new FormData();
+        irBackend.append("idReferencia", user.id);
+        irBackend.append("file", file);
+        const rr = await salvarImage(irBackend);
+        if (rr.status === 500) {
+            setErrorImagem(true);
+        } else {
+            setErrorImagem(false);
+            reader.addEventListener('load', (e) => {
+                setImgPerfil(e.target.result);
+            })
+            reader.readAsDataURL(file);
+        }
     }
 
     return (
@@ -60,13 +74,16 @@ export default function Perfil() {
             <Header />
             {data &&
             <Container sx={{display: "flex", alignItems: "center", flexDirection: "column", marginTop: 5}}>
-                <Avatar onChange={verImage} src={imgPerfil} sx={{width: "200px", height: "200px"}} />
+                <Avatar onChange={verImage} src={imagemMostrar} sx={{width: "200px", height: "200px"}} />
                 <label>
                     <Avatar sx={{marginTop: 2, bgcolor: "#3D8361"}} variant="rounded">
                         <Image />
                         <Input sx={{display: "none"}} onChange={verImage} type="file" />
                     </Avatar>
                 </label>
+                {errorImagem &&
+                    <Alert sx={{marginTop: 2}} severity="error">Tipo da imagem não permitida</Alert>
+                }
                 <Typography sx={{marginTop: 2}} variant="h3">{data.nome}</Typography>
 
                 <Box sx={{display: "flex", alignItems: "center"}}>
@@ -91,14 +108,18 @@ export default function Perfil() {
                         Evento criado — <strong>já está disponível na lista de eventos!</strong>
                     </Alert>
                 </Snackbar>
-
-                {meusEventos && meusEventos.length > 0 ? (
-                    <TableEventos eventos={meusEventos} />
-                ) : (
-                    <Typography fontWeight="bold" variant="body1" sx={{marginTop: 5}}>
-                        Nenhum evento econtrado para esse usuario
-                    </Typography>
-                )}
+            
+                {data.tipo === "Admin" &&
+                    <Box>
+                        {meusEventos && meusEventos.length > 0 ? (
+                            <TableEventos eventos={meusEventos} />
+                        ) : (
+                            <Typography fontWeight="bold" variant="body1" sx={{marginTop: 5}}>
+                                Nenhum evento econtrado para esse usuario
+                            </Typography>
+                        )}
+                    </Box>
+                }
             </Container>
             }
         </Box>
