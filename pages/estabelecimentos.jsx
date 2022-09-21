@@ -4,19 +4,14 @@ import Cards from "../components/cards/estabelecimentos";
 import Filtro from "../components/filtro/filtro";
 import { Alert, Box, CircularProgress, Container, Pagination, Snackbar, Stack } from "@mui/material";
 import usePaginacao from "../hooks/paginacao/ordenar";
-import useFetch from "../hooks/useFecth";
+import {requisicaoApi} from "../hooks/useFecth";
 import { useState } from "react";
 import { Close } from "@mui/icons-material";
 import Head from "next/head";
-export default function Estabelecimentos() {
-    const { data, isLoading, error, setError } = useFetch("estabelecimentos");
+
+export default function Estabelecimentos({data}) {
     const [valuePagina, setValuePagina] = useState(0);
     const [estabs, setEstabs] = useState([]);
-    const vertical = "top";
-    const horizontal = "right";
-    function fecharNotificacaoServidor() {
-        setError(false);
-    }
 
     //Paginacao
     var newDados;
@@ -72,11 +67,10 @@ export default function Estabelecimentos() {
             <Box sx={{backgroundColor: "#EBEBEB", borderRadius: "19px", boxShadow: "rgba(0,0,0,0.35) 0px 5px 15px"}}>
                 <Container sx={{height: "auto", padding: "35px"}}>
                     <Box sx={{display: "flex", justifyContent: "center", flexWrap: "wrap"}}>
-                        {isLoading && <CircularProgress />}
                         {paginacao.paginas[valuePagina].map((esta, index) => (
                             <Cards id={esta._id} nome={esta.nome} stars={esta.rating} starsTotal={esta.rating_total} key={index} />
                         ))}
-                        {!isLoading && paginacao.paginas[0].length <= 0 &&
+                        {paginacao.paginas[0].length <= 0 &&
                             <Alert icon={<Close />} severity="error" sx={{marginTop: 5, marginBottom: 5}}>
                                 <strong>Nenhum estabelecimento encontrado com esse filtro</strong>
                             </Alert>
@@ -90,19 +84,15 @@ export default function Estabelecimentos() {
                 </Container>
             </Box>
             <Footer />
-            {error &&
-                <Snackbar
-                    anchorOrigin={{vertical, horizontal}}
-                    open={true}
-                    onClose={fecharNotificacaoServidor}
-                    autoHideDuration={6000}
-                    key={vertical+horizontal}
-                >
-                    <Alert severity="error" sx={{width: "100%"}}>
-                        Servidor nao encontrado
-                    </Alert>
-                </Snackbar>
-            }
         </div>
     )
+}
+
+export const getStaticProps = async () => {
+    const response = await requisicaoApi("estabelecimentos", "GET");
+    return {
+        props: {
+            data: response.data
+        }
+    }
 }
