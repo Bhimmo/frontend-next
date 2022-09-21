@@ -2,17 +2,16 @@ import { useState } from "react";
 import Header from "../components/header";
 import Footer from "../components/footer";
 import Filtro from "../components/filtro/filtro";
-import useFecth from "../hooks/useFecth";
+import { requisicaoApi } from "../hooks/useFecth";
 import Card from "../components/cards/eventos";
 import usePaginacao from "../hooks/paginacao/ordenar";
 import { Alert, Box, Container, Pagination } from "@mui/material";
 import { Close } from "@mui/icons-material";
 import Head from "next/head";
 
-export default function Eventos() {
+export default function Eventos({data}) {
     const [valuePagina, setValuePagina] = useState(0);
     const [events, setEvents] = useState([]);
-    const { data, isLoading } = useFecth("eventos");
 
     var dados;
     if (events.length > 0) {
@@ -77,7 +76,7 @@ export default function Eventos() {
                         {dados.paginas[valuePagina].map((evento, index) => (
                             <Card key={index} id={evento._id} dataEvento={evento.dataInicial} nome={evento.nome} />
                         ))}
-                        {!isLoading && dados.paginas[0].length <= 0 &&
+                        {dados.paginas[0].length <= 0 &&
                             <Alert icon={<Close />} severity="error" sx={{marginTop: 5, marginBottom: 5}}>
                                 <strong>Nenhum evento encontrado com esse filtro</strong>
                             </Alert>
@@ -88,7 +87,7 @@ export default function Eventos() {
                     </Box>
                 </Box>
             }
-            {!isLoading && data.length <= 0 &&
+            {data.length <= 0 &&
                 <Alert icon={<Close />} severity="info" sx={{marginTop: 5, marginBottom: 5}}>
                     <strong>Nenhum evento encontrado</strong>
                 </Alert>
@@ -96,4 +95,13 @@ export default function Eventos() {
             <Footer />
         </Box>
     )
+}
+
+export const getStaticProps = async () => {
+    const response = await requisicaoApi("eventos", "GET");
+    return {
+        props: {
+            data: response.data
+        }
+    }
 }

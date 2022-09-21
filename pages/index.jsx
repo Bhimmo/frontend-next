@@ -2,13 +2,12 @@ import Header from "../components/header";
 import Footer from "../components/footer";
 import { Box, Container, Typography } from "@mui/material";
 import styles from "../styles/Home.module.css";
-import useFecth from "../hooks/useFecth";
+import { requisicaoApi } from "../hooks/useFecth";
 import ApresentacaoRestaurantes from "../components/cards/restaurantes/apresentacao";
 import ApresentacaoHoteis from "../components/cards/hoteis/apresentacao";
 import Head from "next/head";
 
-export default function Home() {
-    const data = useFecth("/estabelecimentos/home/two").data;
+export default function Home({data}) {
     return (
         <div>
             <Head>
@@ -59,4 +58,13 @@ export default function Home() {
             <Footer />
         </div>
     )
+}
+
+export const getStaticProps = async () => {
+    const response = await requisicaoApi("/estabelecimentos/home/two", "GET");
+    return {
+        props: {
+            data: response.data
+        }
+    }
 }
