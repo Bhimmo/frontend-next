@@ -97,12 +97,11 @@ export default function Eventos({data}) {
     )
 }
 
-export const getStaticProps = async () => {
+export const getServerSideProps = async () => {
     const response = await requisicaoApi("eventos", "GET");
     return {
         props: {
             data: response.data
-        },
-        revalidate: 30
+        }
     }
 }

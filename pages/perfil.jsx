@@ -72,7 +72,7 @@ export default function Perfil() {
                 <title>Perfil - Turismo campo mourao</title>
             </Head>
             <Header />
-            {data &&
+            {data && data._id &&
             <Container sx={{display: "flex", alignItems: "center", flexDirection: "column", marginTop: 5}}>
                 <Avatar onChange={verImage} src={imagemMostrar} sx={{width: "200px", height: "200px"}} />
                 <label>

@@ -1,6 +1,7 @@
-.formFooter {
+.paiFooter {
     display: flex;
-    align-items: center;
+    justify-content: space-around;
+    padding: 45px 0px;
 }
 .inputNot {
     width: 40vh;
@@ -9,4 +10,21 @@
 }
 .itemFooter {
     text-decoration: none;
+}
+.iconButton {
+    display: inline;
+}
+
+@media(max-width: 770px) {
+    .paiFooter {
+        display: inline-block;
+        text-align: center;
+    }
+    .iconButton {
+        margin-top: 15px;
+        margin-bottom: 15px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 }
