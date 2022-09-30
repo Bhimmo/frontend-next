@@ -1,5 +1,5 @@
-import { Logout, ManageAccounts, PersonAddAlt } from "@mui/icons-material";
-import { Avatar, Box, Divider, IconButton, ListItemIcon, Menu, MenuItem } from "@mui/material";
+import { Logout, ManageAccounts, MenuOutlined, PersonAddAlt } from "@mui/icons-material";
+import { Accordion, AccordionDetails, AccordionSummary, AppBar, Avatar, Box, Container, Divider, Drawer, IconButton, List, ListItemButton, ListItemIcon, Menu, MenuItem, Toolbar } from "@mui/material";
 import { useEffect, useState } from "react";
 import { deslogar, pegarLetraAvatar, verificarLogin } from "../hooks/usuario/login";
 import styles from "../styles/Header.module.css";
@@ -17,10 +17,18 @@ export default function Header() {
     })
 
     const [menu, setMenu] = useState(false);
+    const [menuMobile, setMenuMobile] = useState(false);
     const open = Boolean(menu);
+    const openMobile = Boolean(menuMobile);
 
     const abrirMenu = (event) => {
         setMenu(event.currentTarget);
+    }
+    const abrirMenuMobile = (event) => {
+        setMenuMobile(true);
+    }
+    const fecharMenuMobile = () => {
+        setMenuMobile(false);
     }
     const fecharMenu = () => {
         setMenu(null);
@@ -34,14 +42,32 @@ export default function Header() {
     }
 
     return (
-        <div>
-            <Box sx={{
-                padding: "5px 45px",
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                backgroundColor: "#52AA5E"
-            }}>
+        <AppBar position="static" className={styles.paiHeader}>
+            <Container className={styles.divHeader}>
+                <IconButton className={styles.divHambur} onClick={abrirMenuMobile} color="inherit">
+                    <MenuOutlined fontSize="medium" />
+                </IconButton>
+                <Drawer
+                    anchor="top"
+                    open={openMobile}
+                    onClose={fecharMenuMobile}
+                >
+                    <List component="nav" sx={{backgroundColor: "#52AA5E"}}>
+                        <Container>
+                            <ListItemButton>
+                                <a className={styles.navs} href="/">Inicio</a>
+                            </ListItemButton>
+                            <ListItemButton>
+                                <a className={styles.navs} href="/estabelecimentos">Estabelecimentos</a>
+                            </ListItemButton>
+                            <ListItemButton>
+                                <a className={styles.navs} href="/eventos">Eventos</a>
+                            </ListItemButton>
+                        </Container>
+                    </List>
+                </Drawer>
+
+
                 <a href="/" className={styles.textHome}>Turismo Campo Mourão</a>
                 <nav>
                     <ul className={styles.navList}>
@@ -59,7 +85,7 @@ export default function Header() {
                         <a className={styles.logar} href="/login">Entrar <PersonAddAlt sx={{marginLeft: 2}} /> </a>
                     </div>
                 }
-            </Box>
+            </Container>
             <Menu
                 anchorEl={menu}
                 open={open}
@@ -80,6 +106,6 @@ export default function Header() {
                     Sair
                 </MenuItem>
             </Menu>
-        </div>
+        </AppBar>
     )
 }

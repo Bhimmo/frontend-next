@@ -20,7 +20,7 @@ export default function Footer() {
     }
     return (
         <Box sx={{backgroundColor: "#52AA5E"}}>
-            <Container sx={{display: "flex", justifyContent: "space-around", padding: "45px 0px"}}>
+            <Container className={styles.paiFooter}>
                 <Box>
                     <Typography sx={{color: "#fff", fontWeight: "bold", marginBottom: "15px"}} variant="h5">Pages</Typography>
                     <a className={styles.itemFooter} href="/estabelecimentos"><Typography sx={{color: "#fff", padding: "5px 0px"}} variant="body2">Estabelecimentos</Typography></a>
@@ -44,13 +44,15 @@ export default function Footer() {
                             variant="filled"
                             required
                         />
-                        <IconButton 
-                            type="submit"
-                            size="small"
-                            variant="contained"
-                            sx={{marginLeft: "5px", backgroundColor: "#fff"}} 
-                            color="success"
-                        ><Send /></IconButton>
+                        <Box className={styles.iconButton}>
+                            <IconButton 
+                                type="submit"
+                                size="small"
+                                variant="contained"
+                                sx={{marginLeft: "5px", backgroundColor: "#fff"}} 
+                                color="success"
+                            ><Send /></IconButton>
+                        </Box>
                     </form>
                     <Typography sx={{color: "#fff", padding: "5px 0px"}} variant="body2">Para receber notificações das novidades</Typography>
                 </Box>
