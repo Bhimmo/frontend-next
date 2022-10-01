@@ -20,7 +20,12 @@ export default function Footer() {
     }
     return (
         <Box sx={{backgroundColor: "#52AA5E"}}>
-            <Container className={styles.paiFooter}>
+            <Container sx={{
+                padding: "45px 0px",
+                display: {md: "flex", sm: "inline-block"},
+                justifyContent: {md: "space-around"},
+                textAlign: {md: "start", xs: "center"}
+            }}>
                 <Box>
                     <Typography sx={{color: "#fff", fontWeight: "bold", marginBottom: "15px"}} variant="h5">Pages</Typography>
                     <a className={styles.itemFooter} href="/estabelecimentos"><Typography sx={{color: "#fff", padding: "5px 0px"}} variant="body2">Estabelecimentos</Typography></a>

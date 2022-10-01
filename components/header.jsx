@@ -42,31 +42,12 @@ export default function Header() {
     }
 
     return (
-        <AppBar position="static" className={styles.paiHeader}>
-            <Container className={styles.divHeader}>
-                <IconButton className={styles.divHambur} onClick={abrirMenuMobile} color="inherit">
+        <Box className={styles.paiHeader}>
+            <Container sx={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
+
+                <IconButton sx={{color: "#fff", display: {md: "none", sm: "flex"}}} onClick={abrirMenuMobile} >
                     <MenuOutlined fontSize="medium" />
                 </IconButton>
-                <Drawer
-                    anchor="top"
-                    open={openMobile}
-                    onClose={fecharMenuMobile}
-                >
-                    <List component="nav" sx={{backgroundColor: "#52AA5E"}}>
-                        <Container>
-                            <ListItemButton>
-                                <a className={styles.navs} href="/">Inicio</a>
-                            </ListItemButton>
-                            <ListItemButton>
-                                <a className={styles.navs} href="/estabelecimentos">Estabelecimentos</a>
-                            </ListItemButton>
-                            <ListItemButton>
-                                <a className={styles.navs} href="/eventos">Eventos</a>
-                            </ListItemButton>
-                        </Container>
-                    </List>
-                </Drawer>
-
 
                 <a href="/" className={styles.textHome}>Turismo Campo Mourão</a>
                 <nav>
@@ -106,6 +87,25 @@ export default function Header() {
                     Sair
                 </MenuItem>
             </Menu>
-        </AppBar>
+            <Drawer
+                anchor="top"
+                open={openMobile}
+                onClose={fecharMenuMobile}
+            >
+                <List component="nav" sx={{backgroundColor: "#52AA5E"}}>
+                    <Container>
+                        <ListItemButton>
+                            <a className={styles.navs} href="/">Inicio</a>
+                        </ListItemButton>
+                        <ListItemButton>
+                            <a className={styles.navs} href="/estabelecimentos">Estabelecimentos</a>
+                        </ListItemButton>
+                        <ListItemButton>
+                            <a className={styles.navs} href="/eventos">Eventos</a>
+                        </ListItemButton>
+                    </Container>
+                </List>
+            </Drawer>
+        </Box>
     )
 }
