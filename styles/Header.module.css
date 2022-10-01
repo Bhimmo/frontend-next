@@ -8,15 +8,6 @@
     color: green;
     background-color: #fff;
 }
-
-.divHeader {
-    padding-top: 10px;
-    padding-bottom: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #52AA5E;
-}
 .paiHeader {
     background-color: #52AA5E;
 }
@@ -39,9 +30,6 @@
     color: #fff;
     font-size: 25px;
 }
-.divHambur {
-    display: none;
-}
 
 @media(max-width: 770px) {
     .textHome {
@@ -49,8 +37,5 @@
     }
     .navList {
         display: none;
-    }
-    .divHambur {
-        display: flex;
     }
 }
