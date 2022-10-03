@@ -7,7 +7,7 @@ import Footer from "../../components/footer";
 import { useRouter } from "next/router";
 import useFetch from "../../hooks/useFecth";
 import { useEffect, useState } from "react";
-import { LocalAtm, Web } from "@mui/icons-material";
+import { Home, LocalActivity, LocalAirport, LocalAtm, Web } from "@mui/icons-material";
 import Head from "next/head";
 
 var items = [
@@ -91,6 +91,12 @@ export default function DetalhesEventos() {
                                 <Web fontSize="small" />
                                 <a target="blank" style={{textDecoration: "none", color: "rgba(0, 0, 0, 0.87)"}} href={"https://" + data.onlineUrl}><Typography variant="body2">Transmicao: <strong>{data.onlineUrl}</strong></Typography></a>
                             </Box>
+                        }
+                        {data.endereco &&
+                            <Box sx={{display: "flex", alignItems: "center", marginTop: 1}}>
+                            <Home fontSize="small" />
+                            <a target="blank" style={{textDecoration: "none", color: "rgba(0, 0, 0, 0.87)"}}><Typography variant="body2">Endereco: <strong>{data.endereco.logradouro + ", " + data.endereco.bairro}</strong></Typography></a>
+                        </Box>
                         }
                     </Paper>
                 </Box>

@@ -58,12 +58,12 @@ export default function ListarComentarios({comentarios}) {
                 <Avatar sx={{height: 56, width: 56}} />
             </Box>
             <Box>
-                <Box sx={{display: "flex", alignItems: "center"}}>
-                    <Typography variant="h6">{comentarios.usuario} - </Typography>
+                <Box sx={{width: {xs: 250, sm: "auto"}, marginTop: 1, display: "flex", alignItems: "center"}}>
+                    <Typography sx={{whiteSpace: "nowrap", textOverflow: "ellipsis", overflow: "hidden"}} variant="h6">{comentarios.usuario} - </Typography>
                     <Rating value={comentarios.estrelas} readOnly />
                 </Box>
-                <Typography variant="body2" sx={{overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap"}}>{comentarios.comentario}</Typography>
-                <Box sx={{display: "flex", marginTop: 2, alignItems: "center"}}>
+                <Typography variant="body2" sx={{width: {xs: 200, sm: 420, md: "auto"}, overflow: "hidden", textOverflow: "ellipsis"}}>{comentarios.comentario}</Typography>
+                <Box sx={{display: "flex", marginTop: 2, alignItems: "center", padding: 1}}>
                     {selectedLikes &&
                         <ThumbUpAlt className={styles.likeComentario} onClick={like} sx={{cursor: "pointer", marginRight: 1}} />
                     }
