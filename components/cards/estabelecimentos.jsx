@@ -10,7 +10,7 @@ export default function CardsEstabelecimentos({id, nome, stars, starsTotal}) {
             <img className={styles.imgEstabelecimentos} alt="estabelecimentos" src="images/hotel.jpg" />
             <Box sx={{
                 borderRadius: "0px 5px 5px 0px",
-                width: "40vh",
+                width: "30vh",
                 backgroundColor: "#fff",
                 height: "100%",
                 paddingLeft: 1

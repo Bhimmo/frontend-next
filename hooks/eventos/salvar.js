@@ -19,6 +19,7 @@ async function salvarEvento(evento) {
             nome: evento.nome,
             descricao: evento.descricao,
             dataInicial: evento.dataInicial,
+            usuarioId: evento.usuarioId,
             dataFinal: evento.dataFinal,
             valor: evento.valor,
             endereco: evento.endereco
