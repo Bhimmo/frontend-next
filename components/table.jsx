@@ -51,7 +51,7 @@ export default function TableEventos({eventos}){
     return (
         <Box sx={{marginTop: 5}}>
             {evento &&
-            <TableContainer component={Paper} sx={{backgroundColor: "#90B77D"}}>
+            <TableContainer component={Paper} sx={{backgroundColor: "#90B77D", width: {md: 1000, xs: 300}}}>
                 <Toolbar sx={{
                     ...(eventoSelectionado.length > 0 && {
                         bgcolor: "#D9F8C4"

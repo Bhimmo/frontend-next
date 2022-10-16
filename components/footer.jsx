@@ -14,9 +14,9 @@ export default function Footer() {
         e.preventDefault();
         let data = new FormData(e.currentTarget);
         setEnvio({open: true, vertical: "bottom", horizontal: "center"});
-        console.log({
-            email: data.get('emailNotificacao')
-        });
+        // console.log({
+        //     email: data.get('emailNotificacao')
+        // });
     }
     return (
         <Box sx={{backgroundColor: "#52AA5E"}}>

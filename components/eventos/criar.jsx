@@ -1,15 +1,10 @@
 import { Box, Button, Checkbox, Divider, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 import { salvarEvento } from "../../hooks/eventos/salvar";
-import { verificarLogin } from "../../hooks/usuario/login";
 import Input from "../input";
 
 export default function CriarEvento(props) {
     const [online, setOnline] = useState(false);
-
-    if (typeof window !== "undefined") {
-        var user = verificarLogin();
-    }
 
     function eventoOnline() {
         if (online) {
@@ -29,7 +24,7 @@ export default function CriarEvento(props) {
             dataInicial: form.get('dataInicial'),
             dataFinal: form.get('dataFinal'),
             onlineUrl: form.get('linkEvento'),
-            usuarioId: user.id,
+            usuarioId: props.usuario,
             endereco: {
                 bairro: form.get('bairro'),
                 logradouro: form.get('logradouro'),
@@ -91,7 +86,7 @@ export default function CriarEvento(props) {
                             <Input required={true} fullWidth={false} variant="outlined" label="Numero" name="numero" id="numero"/>
                         </Box>
                         <Box sx={{margin: "4px 10px"}}>
-                            <Input required={true} fullWidth={false} variant="outlined" label="Complemento" name="complemento" id="complemento"/>
+                            <Input required={false} fullWidth={false} variant="outlined" label="Complemento" name="complemento" id="complemento"/>
                         </Box>
                     </Box>
                 </Box>
@@ -105,7 +100,7 @@ export default function CriarEvento(props) {
                     </Box>
                 </Box>
             }
-            <Box sx={{marginTop: "35px", display: "flex", justifyContent: "flex-end"}}>
+            <Box sx={{marginTop: "35px", display: "flex", justifyContent: {md: "flex-end", xs: "center"}}}>
                 <Button type="submit" variant="contained">Salvar</Button>
             </Box>
         </form>

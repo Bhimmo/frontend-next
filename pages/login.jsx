@@ -1,12 +1,13 @@
-import { Alert, Button, CircularProgress, FormControl, IconButton, Input, InputAdornment, InputLabel, Typography } from "@mui/material";
+import { Alert, Box, Button, CircularProgress, FormControl, IconButton, Input, InputAdornment, InputLabel, Typography } from "@mui/material";
 import { useState } from "react";
-import { salvarUsuario } from "../hooks/usuario/login";
 import InputCustumizado from "../components/input";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import styles from "../styles/Login.module.css"
 import Head from "next/head";
+import BtnGoogle from "../components/btnGoogle";
+import { getSession, signIn } from "next-auth/react";
 
-export default function Login() {
+export default function Login(props) {
     const [error, setError] = useState(false);
     const [loading, setLoading] = useState(false);
     const [values, setValues] = useState({
@@ -31,19 +32,22 @@ export default function Login() {
     }
     async function enviar(e) {
         e.preventDefault();
-        setError(false);
         setLoading(true);
         let form = new FormData(e.currentTarget);
-        const result = await salvarUsuario({
+        signIn('credentials', {
+            redirect: false,
+            callbackUrl: `/`,
+            acao: "login",
             email: form.get('email'),
             senha: form.get('senha')
+        }).then(res => {
+            setLoading(false);
+            if (res.ok === false) {
+                setError(true);
+                return;
+            }
+            window.location.href = res.url;
         });
-        setLoading(false);
-        if(result === true) {
-            window.location.href = "/";
-        } else {
-            setError(true);
-        }
     }
 
     return (
@@ -90,16 +94,38 @@ export default function Login() {
                             }
                         />
                     </FormControl>
+                    {error &&
+                        <Alert sx={{marginTop: 3}} severity="error">E-mail ou Senha inválido</Alert>
+                    }
                     <Button color="success" type="submit" variant="contained" className={styles.botaoSubmit} disabled={loading} sx={{backgroundColor: "green", marginTop: 3}}>Acessar</Button>
                     {loading &&
                         <CircularProgress sx={{marginTop: 3}} color="success" />
                     }
                 </form>
-                {error &&
-                    <Alert sx={{marginTop: 2}} severity="error">Usuario invalido</Alert>
-                }
-                <span className={styles.textPequeno}>Ainda nao tem conta? <Button sx={{color: "success", marginLeft: 1, marginBottom: "1px"}} variant="outlined" size="small" href="/cadastro">Cadastre-se</Button></span>
+
+                {/* Login social */}
+                <Box sx={{marginTop: 2}}>
+                    <BtnGoogle />
+                </Box>
+
+                <span className={styles.textPequeno}>Ainda não tem conta? <Button sx={{color: "success", marginLeft: 1, marginBottom: "1px"}} variant="outlined" size="small" href="/cadastro">Cadastre-se</Button></span>
             </div>
         </div>
     )
+}
+
+export async function getServerSideProps(context) {
+    const session = await getSession(context);
+    if (session) {
+        return {
+            redirect: {
+                destination: "/",
+                permanent: false
+            }
+        }
+    }
+    
+    return {
+        props: {}
+    }
 }

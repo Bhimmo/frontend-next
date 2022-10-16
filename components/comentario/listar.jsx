@@ -3,12 +3,18 @@ import { Avatar, Box, Paper, Rating, Typography } from "@mui/material";
 import { useState } from "react";
 import { avaliarComDeslike, avaliarComLike } from "../../hooks/comentarios/avaliacao";
 import styles from "../../styles/Comentario.module.css";
+import {pegarLetraAvatar} from "../../hooks/usuario/login";
 
 export default function ListarComentarios({comentarios}) {
     const [likes, setLikes] = useState(comentarios.likes);
     const [deslikes, setDeslikes] = useState(comentarios.deslikes);
     const [selectedLikes, setSelectedLikes] = useState(false);
     const [selectedDeslikes, setSelectedDeslikes] = useState(false);
+
+    const user = {
+        nome: comentarios.usuario
+    }
+    const letra = pegarLetraAvatar(user);
 
     async function like() {
         const dataSalvar = {
@@ -54,8 +60,8 @@ export default function ListarComentarios({comentarios}) {
 
     return (
         <Paper sx={{marginTop: 1, display: "flex", alignItems: "center", maxWidth: "100%", backgroundColor: "#EEEEEE"}}>
-            <Box sx={{padding: 5}}>
-                <Avatar sx={{height: 56, width: 56}} />
+            <Box sx={{padding: {md: 5, xs: 2}}}>
+                <Avatar sx={{height: 56, width: 56}}>{letra}</Avatar>
             </Box>
             <Box>
                 <Box sx={{width: {xs: 250, sm: "auto"}, marginTop: 1, display: "flex", alignItems: "center"}}>

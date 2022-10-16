@@ -1,8 +1,8 @@
 import { Alert, Box, Button, createTheme, Rating, ThemeProvider } from "@mui/material";
 import { useEffect, useState } from "react";
 import Input from "../input";
-import { verificarLogin } from "../../hooks/usuario/login";
 import { salvarComentario } from "../../hooks/comentarios/avaliacao";
+import { useSession } from "next-auth/react";
 
 const threme = createTheme({
     palette: {
@@ -15,20 +15,19 @@ const threme = createTheme({
     }
 })
 export default function CriacaoComentario(props) {
+    const { data: session } = useSession();
+    var usuario;
+    if (session) {
+        usuario = session.user
+    }
     const [valueRating, setValueRating] = useState(0);
     const [valueText, setValueText] = useState("");
-    const [usuario, setUsuario] = useState();
-    useEffect(() => {
-        if (!usuario) {
-            setUsuario(verificarLogin())
-        }
-    }, [usuario])
 
     async function comentar(e) {
         e.preventDefault();
         let form = new FormData(e.currentTarget);
         const data = {
-            usuarioId: usuario.id,
+            usuario: usuario.name,
             estrelas: form.get('estrelas'),
             comentario: form.get('comentario'),
             estabelecimento: props.id
