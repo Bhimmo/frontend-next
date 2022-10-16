@@ -32,3 +32,9 @@
         transform: translate(10px, 0);
     }
 }
+
+@media(max-width: 770px) {
+    .imgEstabelecimentos {
+        width: 20vh;
+    }
+}

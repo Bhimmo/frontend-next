@@ -1,7 +1,8 @@
 import Head from "next/head"
+import { SessionProvider } from "next-auth/react";
 import "../styles/globals.css"
 
-export default function MyApp({ Component, pageProps }) {
+export default function MyApp({ Component, pageProps: {session, ...pageProps} }) {
     return (
       <>
         <Head>
@@ -15,7 +16,9 @@ export default function MyApp({ Component, pageProps }) {
           <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" />
 
         </Head>
-        <Component {...pageProps} />
+        <SessionProvider session={session}>
+          <Component {...pageProps} />
+        </SessionProvider>
       </>
     )
   }

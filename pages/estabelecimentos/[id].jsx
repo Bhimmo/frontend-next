@@ -8,8 +8,9 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useState } from "react";
 import useFetch from "../../hooks/useFecth";
-import { Language, Phone, Signpost } from "@mui/icons-material";
+import { ArrowForwardIos, AttachMoney, CheckBoxOutlineBlank, DeliveryDining, Filter, Language, Phone, Signpost } from "@mui/icons-material";
 import Head from "next/head";
+import GoogleMaps from "../../components/goggleMaps";
 
 var items = [
     {
@@ -19,17 +20,6 @@ var items = [
     }
 ]
 
-const EnderecoComponent = ({endereco, url}) => {
-    if (endereco.logradouro && endereco.numero !== "null") {
-        return <a target="blank" style={{textDecoration: "none", marginLeft: 5}} href={url}>
-            {endereco.logradouro}, {endereco.numero}
-        </a>
-    }
-    return <a target="blank" style={{textDecoration: "none", marginLeft: 5}} href={url}>
-        Clique aqui
-    </a>
-}
-
 export default function DetalhesEstabelecimentos() {
     const router = useRouter();
     const id = router.query.id;
@@ -37,6 +27,15 @@ export default function DetalhesEstabelecimentos() {
 
     const dataComentarios = useFetch("comentarios/"+id);
     const [dataComent, setDataComent] = useState([]);
+
+    var mostrar = true;
+    if (data) {
+        var imagens = data.fotos;
+        if (imagens && imagens.length <= 0) {
+            imagens = ["One Elemnt"]
+        }
+    }
+
     useEffect(() => {
         if (dataComent.length === 0) {
             setDataComent(dataComentarios.data);
@@ -53,36 +52,57 @@ export default function DetalhesEstabelecimentos() {
                     <Header />
                     <Container sx={{marginBottom: 5}}>
                         <Typography sx={{textAlign: "center", marginTop: 5}} variant="h3">{data.nome}</Typography>
+                        {data.level_price
+                        ? <Box sx={{marginTop: 3, display: "flex", justifyContent: "center"}}><Rating
+                            sx={{color: "green"}}
+                            emptyIcon={<AttachMoney />}
+                            icon={<AttachMoney />}
+                            value={data.level_price}
+                            readOnly
+                            /></Box>
+                        : ""
+                        }
                     
-                        <Carrosel sx={{marginTop: 5, width: "100%"}}>
-                            {items.map((item, index) => (
+                        <Carrosel IndicatorIcon={<Filter />} sx={{marginTop: 5, width: "100%", height: 300}}>
+                            {imagens.map((item, index) => (
                                 <Box key={index} sx={{display: "flex", justifyContent: "center"}}>
-                                    <img src={item.img} style={{maxHeight: 300, maxWidth: 300, margin: 5}} />
-                                    <img src={item.img} style={{maxHeight: 300, maxWidth: 300}} />
-                                    <img src={item.img} style={{maxHeight: 300, maxWidth: 300, margin: 5}} />
+                                    <img
+                                        style={{backgroundImage: "cover"}}
+                                        alt="Imagem referencia google"
+                                        src={mostrar
+                                            ? items[0].img
+                                            : `https://maps.googleapis.com/maps/api/place/photo?maxwidth=2000&maxheight=300&photo_reference=${item.photo_reference}&key=${process.env.NEXT_PUBLIC_GOOGLE_KEY}`}/>
                                 </Box>
                             ))}
                         </Carrosel>
                         <Divider sx={{marginTop: 5}}/>
                         <Box sx={{display: "flex", justifyContent: "space-between", flexWrap: "wrap"}}>
                             {/* Contato */}
-                            <Paper sx={{padding: 3, backgroundColor: "#F9F9F9", marginTop: 5, maxWidth: "400px"}}>
-                                <Typography variant="h4" sx={{textAlign: "center"}}>Contato</Typography>
+                            <Paper sx={{padding: 3, backgroundColor: "#F9F9F9", marginTop: 5, maxWidth: "400px", minWidth: "200px"}}>
+                                <Typography variant="h4" sx={{textAlign: "center"}}>Detalhes</Typography>
                                 <Box sx={{display: "flex", alignItems: "center", marginTop: 1}}>
                                     <Phone fontSize="small"/>
                                     <Typography variant="body2">Telefone: {data.telefone}</Typography>
                                 </Box>
                                 <Box sx={{display: "flex", alignItems: "center", marginTop: 1}}>
                                     <Language fontSize="small"/>
-                                    <Typography sx={{overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis"}} variant="body2">Site: <a target="blank" style={{textDecoration: "none"}} href={data.site}>{(data.site ? data.site : "Nao registrado")}</a></Typography>
+                                    <Typography sx={{overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis"}} variant="body2">Site: <a target="blank" style={{textDecoration: "none"}} href={data.site ? data.site : data.place_url}>{(data.site ? data.site : "Não registrado")}</a></Typography>
                                 </Box>
                                 <Box sx={{display: "flex", alignItems: "center", marginTop: 1}}>
                                     <Signpost fontSize="small"/>
                                     <Typography variant="body2" sx={{overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap"}}>
                                         Endereco: 
-                                        <EnderecoComponent endereco={data.endereco} url={data.place_url} />
+                                        <a target="blank" style={{textDecoration: "none", marginLeft: 5}} href={data.place_url}>{data.endereco}</a>
                                     </Typography>
                                 </Box>
+                                {data.delivery &&
+                                    <Box sx={{display: "flex", alignItems: "center", marginTop: 1}}>
+                                        <DeliveryDining fontSize="small"/>
+                                        <Typography
+                                            sx={{overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis"}}
+                                            variant="body2">Delivery: <strong>Disponível para entregas</strong></Typography>
+                                    </Box>
+                                }
                             </Paper>
                             {/* Avaliacoes */}
                             <Paper sx={{paddingTop: 2, backgroundColor: "#F9F9F9", marginTop: 5, width: "350px", maxWidth: "400px", height: "100%"}}>
@@ -92,6 +112,11 @@ export default function DetalhesEstabelecimentos() {
                                     <Typography sx={{color: "#fff"}}> / {data.rating_total} avaliacoes</Typography>
                                 </Box>
                             </Paper>
+                        </Box>
+
+                        {/* Mapa */}
+                        <Box sx={{height: 300, marginTop: 5}}>
+                            <GoogleMaps cordenadas={data.location} />
                         </Box>
 
                         {/* Comentarios */}

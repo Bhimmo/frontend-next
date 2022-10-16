@@ -1,5 +1,4 @@
 import { requisicaoApi } from "../useFecth";
-import { pegarUsuario } from "../usuario/login";
 async function avaliarComLike({id, likes}) {
     await requisicaoApi("comentarios/likes/"+id, "PATCH", {likes})
 }
@@ -8,12 +7,11 @@ async function avaliarComDeslike({id, deslikes}) {
 }
 async function salvarComentario(data) {
     if (data.estrelas) {
-        const user = await pegarUsuario(data.usuarioId);
         const dataEnviar = {
             idLugar: data.estabelecimento,
             comentario: data.comentario,
             estrelas: parseInt(data.estrelas),
-            usuario: user.nome
+            usuario: data.usuario
         }
         const enviadoComentario = await requisicaoApi("comentarios", "POST", dataEnviar);
         if (enviadoComentario.status === 201){

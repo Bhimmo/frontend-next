@@ -1,40 +1,32 @@
-import { Alert, Avatar, Box, Button, Container, Input, Paper, Snackbar, Typography } from "@mui/material";
+import { Alert, Avatar, Box, Button, Input, Container, Paper, Snackbar, Typography, Collapse, Fade, Grow, Slide } from "@mui/material";
 import Header from "../components/header";
 import FormularioEvento from "../components/eventos/criar";
 import { useState } from "react";
 import TableEventos from "../components/table";
-import useFetch from "../hooks/useFecth";
-import { verificarLogin } from "../hooks/usuario/login";
+import {requisicaoApi} from "../hooks/useFecth";
 import { salvarImage } from "../hooks/images/salvar";
-import { Cake, Image } from "@mui/icons-material";
+import { Cake, DriveFileRenameOutline, Image } from "@mui/icons-material";
 import Head from "next/head";
+import { getSession } from "next-auth/react";
+import InputPerso from "../components/input";
 
-export default function Perfil() {
+export default function Perfil(props) {
+    const data = props.data;
+    const [nomeEdit, setNomeEdit] = useState(false);
     const [open, setOpen] = useState(false);
     const [eventoCriado, setEventoCriado] = useState({open: false, vertical: "bottom", horizontal: "center"})
     const { vertical, horizontal } = eventoCriado;
     const [imgPerfil, setImgPerfil] = useState();
     const [errorImagem, setErrorImagem]= useState(false);
 
-    var data;
-    var meusEventos;
     var imagemMostrar;
-    if (typeof window !== "undefined") {
-        var user = verificarLogin();
-        if (!user) {
-            window.location.href = "/";
-        }
-        data = useFetch("usuarios/"+user.id).data;
-        meusEventos = useFetch("eventos/usuario/"+user.id).data;
-        
-        var date = new Date(data.createdAt);
-        var dia = String(date.getDate()).padStart(2, '0');
-        var mes = String(date.getMonth() + 1).padStart(2, '0');
-        var ano = date.getFullYear()
-        var dataAtual = dia + "/" + mes + "/" + ano;
+    var date = new Date(data.createdAt);
+    var dia = String(date.getDate()).padStart(2, '0');
+    var mes = String(date.getMonth() + 1).padStart(2, '0');
+    var ano = date.getFullYear()
+    var dataAtual = dia + "/" + mes + "/" + ano;
 
-        imagemMostrar = imgPerfil || data.avatar_url;
-    }
+    imagemMostrar = imgPerfil || data.avatar_url;
 
     function openEvento() {
         if (open) {
@@ -52,7 +44,7 @@ export default function Perfil() {
 
         const reader = new FileReader();
         var irBackend = new FormData();
-        irBackend.append("idReferencia", user.id);
+        irBackend.append("idReferencia", data._id);
         irBackend.append("file", file);
         const rr = await salvarImage(irBackend);
         if (rr.status === 500) {
@@ -65,6 +57,9 @@ export default function Perfil() {
             reader.readAsDataURL(file);
         }
     }
+    const trocarNome = () => {
+        setNomeEdit(!nomeEdit)
+    }
 
     return (
         <Box sx={{marginBottom: 5}}>
@@ -74,13 +69,23 @@ export default function Perfil() {
             <Header />
             {data && data._id &&
             <Container sx={{display: "flex", alignItems: "center", flexDirection: "column", marginTop: 5}}>
-                <Avatar onChange={verImage} src={imagemMostrar} sx={{width: "200px", height: "200px"}} />
-                <label>
-                    <Avatar sx={{marginTop: 2, bgcolor: "#3D8361"}} variant="rounded">
-                        <Image />
-                        <Input sx={{display: "none"}} onChange={verImage} type="file" />
-                    </Avatar>
-                </label>
+                <Avatar variant="rounded" onChange={verImage} src={imagemMostrar} sx={{width: "200px", height: "200px"}} />
+                <Box sx={{marginBottom: 2, width: 200, display: "flex", justifyContent: "space-around"}}>
+                    <label>
+                        <Avatar sx={{marginTop: 2, bgcolor: "#3D8361"}} variant="rounded">
+                            <Image />
+                            <Input sx={{display: "none"}} onChange={verImage} type="file" />
+                        </Avatar>
+                    </label>
+                    <label /*onClick={trocarNome}*/>
+                        <Avatar sx={{marginTop: 2, bgcolor: "gray"}} variant="rounded">
+                            <DriveFileRenameOutline />
+                        </Avatar>
+                    </label>
+                </Box>
+                <Collapse in={nomeEdit} direction="down">
+                    <InputPerso color="success" fullWidth={false} label="Trocar nome" type="text" placeholder="Digite seu novo nome" />
+                </Collapse>
                 {errorImagem &&
                     <Alert sx={{marginTop: 2}} severity="error">Tipo da imagem não permitida</Alert>
                 }
@@ -95,7 +100,7 @@ export default function Perfil() {
                 }
                 {open &&
                     <Paper sx={{width: "100%", height: "auto", backgroundColor: "#F8F9FA", marginTop: "25px"}}>
-                        <FormularioEvento criacaoEvento={setEventoCriado} mostrarForm={setOpen} />
+                        <FormularioEvento usuario={data._id} criacaoEvento={setEventoCriado} mostrarForm={setOpen} />
                     </Paper>
                 }
                 <Snackbar
@@ -111,8 +116,8 @@ export default function Perfil() {
             
                 {data.tipo === "Admin" &&
                     <Box>
-                        {meusEventos && meusEventos.length > 0 ? (
-                            <TableEventos eventos={meusEventos} />
+                        {props.eventos && props.eventos.length > 0 ? (
+                            <TableEventos eventos={props.eventos} />
                         ) : (
                             <Typography fontWeight="bold" variant="body1" sx={{marginTop: 5}}>
                                 Nenhum evento econtrado para esse usuario
@@ -124,4 +129,27 @@ export default function Perfil() {
             }
         </Box>
     )
+}
+
+export async function getServerSideProps(context) {
+    const session = await getSession(context);
+
+    if (!session) {
+        return {
+            redirect: {
+                destination: "/",
+                permanent: false
+            }
+        }
+    }
+    var dataUser = await requisicaoApi("usuarios/"+session.user.email, "GET");
+    var meusEventos = await requisicaoApi("eventos/usuario/"+dataUser.data._id, "GET");
+
+    return {
+        props: {
+            user: session.user,
+            data: dataUser.data,
+            eventos: meusEventos.data
+        }
+    }
 }

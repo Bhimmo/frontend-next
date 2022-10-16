@@ -5,8 +5,9 @@ import InputCustumizado from "../components/input";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import styles from "../styles/Login.module.css"
 import Head from "next/head";
+import { signIn, getSession } from "next-auth/react";
 
-export default function Login() {
+export default function Login(props) {
     const [error, setError] = useState(false);
     const [loading, setLoading] = useState(false);
     const [values, setValues] = useState({
@@ -31,20 +32,24 @@ export default function Login() {
     }
     async function enviar(e) {
         e.preventDefault();
-        setError(false);
         setLoading(true);
         let form = new FormData(e.currentTarget);
-        const result = await criarUsuario({
+        signIn("credentials", {
+            redirect: false,
+            callbackUrl: "/",
+            acao: "cadastro",
             nome: form.get('nome'),
             email: form.get('email'),
             senha: form.get('senha')
-        });
-        setLoading(false);
-        if(result === true) {
-            window.location.href = "/";
-        } else {
-            setError(true);
-        }
+        }).then(response => {
+            setLoading(false);
+            if (response.ok === false) {
+                setError(true);
+                return
+            }
+            window.location.href = response.url
+        })
+        
     }
 
     return (
@@ -107,10 +112,27 @@ export default function Login() {
                     }
                 </form>
                 {error &&
-                    <Alert sx={{marginTop: 2}} severity="error">Usuario invalido</Alert>
+                    <Alert sx={{marginTop: 2}} severity="error">Email inválido</Alert>
                 }
                 <span className={styles.textPequeno}>Quer fazer login? <Button sx={{color: "success", marginLeft: 1, marginBottom: "1px"}} variant="outlined" size="small" href="/login">Login</Button></span>
             </div>
         </div>
     )
+}
+
+export async function getServerSideProps(context) {
+    const session = await getSession(context);
+
+    if (session) {
+        return {
+            redirect: {
+                destination: "/",
+                permanent: false
+            }
+        }
+    }
+
+    return {
+        props: {}
+    }
 }

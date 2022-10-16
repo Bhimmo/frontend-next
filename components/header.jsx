@@ -1,20 +1,19 @@
 import { Logout, ManageAccounts, MenuOutlined, PersonAddAlt } from "@mui/icons-material";
-import { Accordion, AccordionDetails, AccordionSummary, AppBar, Avatar, Box, Container, Divider, Drawer, IconButton, List, ListItemButton, ListItemIcon, Menu, MenuItem, Toolbar } from "@mui/material";
-import { useEffect, useState } from "react";
-import { deslogar, pegarLetraAvatar, verificarLogin } from "../hooks/usuario/login";
+import { Avatar, Box, Container, Divider, Drawer, IconButton, List, ListItemButton, ListItemIcon, Menu, MenuItem } from "@mui/material";
+import { useState } from "react";
 import styles from "../styles/Header.module.css";
+import { useSession, signOut } from "next-auth/react";
 
 export default function Header() {
+    const { data: session } = useSession();
     const [user, setUser] = useState(undefined);
     const [letra, setLetra] = useState(false);
-    useEffect(() => {
-        let usuario = verificarLogin();
-        if (usuario && !letra) {
-            const l = pegarLetraAvatar(user);
-            setLetra(l);
-            setUser(usuario);
-        }
-    })
+
+    if (session && user == undefined) {
+        setUser(session.user)
+        const letra = session.user.name.substr(0, 1);
+        setLetra(letra);
+    }
 
     const [menu, setMenu] = useState(false);
     const [menuMobile, setMenuMobile] = useState(false);
@@ -34,8 +33,7 @@ export default function Header() {
         setMenu(null);
     }
     function logout() {
-        deslogar();
-        window.history.go("/");
+        signOut();
     }
     function entrarPerfil() {
         window.location.href = "/perfil";
@@ -58,7 +56,10 @@ export default function Header() {
                 </nav>
                 {user &&
                     <IconButton onClick={abrirMenu}>
-                        <Avatar>{letra}</Avatar>
+                        {user.image
+                            ? <Avatar src={user.image} />
+                            : <Avatar>{letra}</Avatar>
+                        }
                     </IconButton>
                 }
                 {!user &&
