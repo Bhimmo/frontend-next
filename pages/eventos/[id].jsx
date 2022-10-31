@@ -4,57 +4,35 @@ import Carrosel from "react-material-ui-carousel";
 import CriacaoComentarios from "../../components/comentario/criacao";
 import Comentarios from "../../components/comentario/listar";
 import Footer from "../../components/footer";
-import { useRouter } from "next/router";
-import useFetch from "../../hooks/useFecth";
-import { useEffect, useState } from "react";
-import { Home, LocalActivity, LocalAirport, LocalAtm, Web } from "@mui/icons-material";
+import {requisicaoApi} from "../../hooks/useFecth";
+import { useState } from "react";
+import { Home, LocalAtm, Web } from "@mui/icons-material";
 import Head from "next/head";
 
-var items = [
-    {
-        img: "https://www.feriasbrasil.com.br/fotosfb/576094600-M.jpg",
-        name: "Random",
-        description: "alt"
-    }
-]
-
-export default function DetalhesEventos() {
-    const router = useRouter();
-    const id = router.query.id;
-    const data = useFetch("eventos/"+id).data;
+export default function DetalhesEventos({data, comentarios}) {
+    const [dataComent, setDataComent] = useState(comentarios);
 
     var color = "primary";
-    if (data) {
-        if (data.status === "Encerrado") {
-            color = "error";
-        } else {
-            color = "warning";
-        }
-        var status = {
-            status: data.status,
-            color: color
-        }
-
-        var valor;
-        if (data.valor > 0) {
-            valor = "R$" + data.valor;
-        } else {
-            valor = "Gratuito";
-        }
+    if (data.status === "Encerrado") {
+        color = "error";
+    } else {
+        color = "warning";
+    }
+    var status = {
+        status: data.status,
+        color: color
     }
 
-    const dataComentarios = useFetch("comentarios/"+id);
-    const [dataComent, setDataComent] = useState([]);
-    useEffect(() => {
-        if (dataComent.length === 0) {
-            setDataComent(dataComentarios.data);
-        }
-    }, [dataComent, dataComentarios])
- 
+    var valor;
+    if (data.valor > 0) {
+        valor = "R$" + data.valor;
+    } else {
+        valor = "Gratuito";
+    }
+
     return (
         <Box>
             <Header />
-            {data &&
             <Container sx={{marginBottom: 5}}>
                 <Head>
                     <title>{data.nome} - Campo Mourao</title>
@@ -65,13 +43,9 @@ export default function DetalhesEventos() {
                 </Box>
 
                 <Carrosel sx={{marginTop: 5, width: "100%"}}>
-                    {items.map((item, index) => (
-                        <Box key={index} sx={{display: "flex", justifyContent: "center"}}>
-                            <img alt="Eventos" src={item.img} style={{maxHeight: 300, maxWidth: 300, margin: 5}} />
-                            <img alt="Eventos" src={item.img} style={{maxHeight: 300, maxWidth: 300}} />
-                            <img alt="Eventos" src={item.img} style={{maxHeight: 300, maxWidth: 300, margin: 5}}/>
-                        </Box>
-                    ))}
+                    <Box sx={{display: "flex", justifyContent: "center"}}>
+                        <img alt="Eventos" src={data.foto} style={{maxHeight: 300, maxWidth: 300}} />
+                    </Box>
                 </Carrosel>
                 <Divider sx={{marginTop: 5}} />
                 <Box sx={{display: "flex", justifyContent: "space-around", flexWrap: "wrap"}}>
@@ -89,7 +63,7 @@ export default function DetalhesEventos() {
                         {data.onlineUrl &&
                             <Box sx={{display: "flex", alignItems: "center", marginTop: 1}}>
                                 <Web fontSize="small" />
-                                <a target="blank" style={{textDecoration: "none", color: "rgba(0, 0, 0, 0.87)"}} href={"https://" + data.onlineUrl}><Typography variant="body2">Transmicao: <strong>{data.onlineUrl}</strong></Typography></a>
+                                <a target="blank" style={{textDecoration: "none", color: "rgba(0, 0, 0, 0.87)"}} href={data.onlineUrl}><Typography variant="body2">Transmicao: <strong>{data.onlineUrl}</strong></Typography></a>
                             </Box>
                         }
                         {data.endereco &&
@@ -105,7 +79,7 @@ export default function DetalhesEventos() {
                 <Box sx={{marginTop: 5}}>
                     <Box sx={{display: "flex", alignItems: "start", flexDirection: "column"}}>
                         <Typography variant="h4">Comentarios</Typography>
-                        <CriacaoComentarios obter={dataComent} inserir={setDataComent} id={id} />
+                        <CriacaoComentarios obter={dataComent} inserir={setDataComent} id={data._id} />
                     </Box>
                     <Box sx={{marginTop: 4}}>
                         {dataComent.map((comentario, index) => (
@@ -114,8 +88,19 @@ export default function DetalhesEventos() {
                     </Box>
                 </Box>
             </Container>
-            }
+
             <Footer />
         </Box>
     )
+}
+
+export const getServerSideProps = async (context) => {
+    const { data } = await requisicaoApi("eventos/"+context.params.id);
+    const comentarios = await requisicaoApi("comentarios/"+context.params.id);
+    return {
+        props: {
+            data,
+            comentarios: comentarios.data
+        }
+    }
 }

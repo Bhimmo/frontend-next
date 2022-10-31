@@ -15,11 +15,16 @@ export default function Input({
     focused,
     placeholder,
     value,
-    onChange
+    onChange,
+    defaultValue,
+    marginTop=0,
+    marginLeft=0
 }) {
     return (
         <TextField
+            sx={{marginTop: marginTop, marginLeft: marginLeft}}
             id={id}
+            defaultValue={defaultValue}
             variant={variant}
             type={type}
             name={name}

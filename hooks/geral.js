@@ -9,7 +9,20 @@ function arrumarValor(valor) {
     const newValor = valor.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'});
     return newValor;
 }
+function arrumarDateInput(data) {
+    const newDate = new Date(data);
+    var data = 
+        newDate.getFullYear() + "-" + 
+        String(newDate.getMonth() + 1).padStart(2, '0') + "-" +
+        String(newDate.getDate()).padStart(2, '0') + "T" +
+        String(newDate.getHours()).padStart(2, '0') + ":" +
+        String(newDate.getMinutes()).padStart(2, '0');
+
+    return data
+
+}
 export {
     arrumarDate,
-    arrumarValor
+    arrumarValor,
+    arrumarDateInput
 }

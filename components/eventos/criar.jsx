@@ -1,10 +1,13 @@
-import { Box, Button, Checkbox, Divider, TextField, Typography } from "@mui/material";
+import { Avatar, Box, Button, Checkbox, Divider, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 import { salvarEvento } from "../../hooks/eventos/salvar";
 import Input from "../input";
+import styles from "../../styles/formularioEvento.module.css";
+import { Add } from "@mui/icons-material";
 
 export default function CriarEvento(props) {
     const [online, setOnline] = useState(false);
+    const [imagem, setImagem] = useState({imagem: null, file: null});
 
     function eventoOnline() {
         if (online) {
@@ -14,30 +17,44 @@ export default function CriarEvento(props) {
         }
     }
 
+    const subirImagem = (event) => {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+        reader.addEventListener('load', (e) => {
+            setImagem({imagem: e.target.result, file: file});
+        })
+        reader.readAsDataURL(file);
+    }
+
     async function enviarFormulario(e) {
         e.preventDefault();
-        let form = new FormData(e.currentTarget);
-        let dataEvento = {
-            nome: form.get('nomeEvento'),
-            descricao: form.get('descricaoEvento'),
-            valor: form.get('valorEvento'),
-            dataInicial: form.get('dataInicial'),
-            dataFinal: form.get('dataFinal'),
-            onlineUrl: form.get('linkEvento'),
-            usuarioId: props.usuario,
-            endereco: {
-                bairro: form.get('bairro'),
-                logradouro: form.get('logradouro'),
-                numero: form.get('numero'),
-                cep: form.get('cep'),
-                complemento: form.get('complemento'),
+        if (imagem.file) {
+            let form = new FormData(e.currentTarget);
+            let dataEvento = {
+                nome: form.get('nomeEvento'),
+                descricao: form.get('descricaoEvento'),
+                valor: form.get('valorEvento'),
+                dataInicial: form.get('dataInicial'),
+                dataFinal: form.get('dataFinal'),
+                onlineUrl: form.get('linkEvento'),
+                usuarioId: props.usuario,
+                foto: imagem.file,
+                endereco: {
+                    bairro: form.get('bairro'),
+                    logradouro: form.get('logradouro'),
+                    numero: form.get('numero'),
+                    cep: form.get('cep'),
+                    complemento: form.get('complemento'),
+                }
+            }
+            const result = await salvarEvento(dataEvento);
+            if (result) {
+                props.mostrarForm(false);
+                props.criacaoEvento({open: true, color: "success", vertical: "bottom", horizontal: "center", mensagem: "Evento criado — já está disponível na lista de eventos!"});
+                return;
             }
         }
-        const result = await salvarEvento(dataEvento);
-        if (result) {
-            props.mostrarForm(false);
-            props.criacaoEvento({open: true, vertical: "bottom", horizontal: "center"})
-        }
+        props.criacaoEvento({open: true, color: "error", vertical: "bottom", horizontal: "center", mensagem: "Selecione uma imagem para o evento!"});
     }
 
     return (
@@ -96,10 +113,27 @@ export default function CriarEvento(props) {
                 <Box>
                     <Typography sx={{marginTop: "15px"}} variant="h5">Link transmicao</Typography>
                     <Box sx={{display: "flex", marginTop: "15px", justifyContent: "center"}}>
-                        <Input required={true} variant="outlined" label="Link evento" name="linkEvento" id="linkEvento" />
+                        <Input type="url" required={true} variant="outlined" label="Link evento" name="linkEvento" id="linkEvento" />
                     </Box>
                 </Box>
             }
+            <Divider sx={{marginTop: 1}} />
+            <Box>
+                <Typography sx={{marginTop: "15px"}} variant="h5">Imagem do evento</Typography>
+                <label>
+                    <Box sx={{display: "flex", alignItems: "center", marginTop: 2}}>
+                        <Avatar sx={{bgcolor: "#3D8361"}} variant="rounded">
+                            <Add />
+                            <input className={styles.campoFile} onChange={subirImagem} type="file" />
+                        </Avatar>
+                        <Typography fontWeight="bold" sx={{pl: 2}}>Adicionar Imagem</Typography>
+                    </Box>
+                </label>
+                <Box sx={{marginTop: 2}}>
+                    <img width="100" src={imagem.imagem} />
+                </Box>
+            </Box>
+
             <Box sx={{marginTop: "35px", display: "flex", justifyContent: {md: "flex-end", xs: "center"}}}>
                 <Button type="submit" variant="contained">Salvar</Button>
             </Box>

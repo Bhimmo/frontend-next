@@ -61,7 +61,7 @@ export default function ListarComentarios({comentarios}) {
     return (
         <Paper sx={{marginTop: 1, display: "flex", alignItems: "center", maxWidth: "100%", backgroundColor: "#EEEEEE"}}>
             <Box sx={{padding: {md: 5, xs: 2}}}>
-                <Avatar sx={{height: 56, width: 56}}>{letra}</Avatar>
+                <Avatar src={comentarios.fotoUsuario} sx={{height: 56, width: 56}}>{letra}</Avatar>
             </Box>
             <Box>
                 <Box sx={{width: {xs: 250, sm: "auto"}, marginTop: 1, display: "flex", alignItems: "center"}}>

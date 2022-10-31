@@ -7,7 +7,7 @@ import Comentarios from "../../components/comentario/listar";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useState } from "react";
-import useFetch from "../../hooks/useFecth";
+import useFetch, { requisicaoApi } from "../../hooks/useFecth";
 import { ArrowForwardIos, AttachMoney, CheckBoxOutlineBlank, DeliveryDining, Filter, Language, Phone, Signpost } from "@mui/icons-material";
 import Head from "next/head";
 import GoogleMaps from "../../components/goggleMaps";
@@ -20,27 +20,13 @@ var items = [
     }
 ]
 
-export default function DetalhesEstabelecimentos() {
-    const router = useRouter();
-    const id = router.query.id;
-    const data = useFetch("estabelecimentos/"+id).data;
+export default function DetalhesEstabelecimentos({data, comentarios}) {
+    const [dataComent, setDataComent] = useState(comentarios);
 
-    const dataComentarios = useFetch("comentarios/"+id);
-    const [dataComent, setDataComent] = useState([]);
-
-    var mostrar = true;
-    if (data) {
-        var imagens = data.fotos;
-        if (imagens && imagens.length <= 0) {
-            imagens = ["One Elemnt"]
-        }
+    var imagens = data.fotos;
+    if (imagens && imagens.length <= 0) {
+        imagens = ["One Elemnt"]
     }
-
-    useEffect(() => {
-        if (dataComent.length === 0) {
-            setDataComent(dataComentarios.data);
-        }
-    }, [dataComentarios, dataComent])
 
     return (
         <Box>
@@ -69,9 +55,9 @@ export default function DetalhesEstabelecimentos() {
                                     <img
                                         style={{backgroundImage: "cover"}}
                                         alt="Imagem referencia google"
-                                        src={mostrar
-                                            ? items[0].img
-                                            : `https://maps.googleapis.com/maps/api/place/photo?maxwidth=2000&maxheight=300&photo_reference=${item.photo_reference}&key=${process.env.NEXT_PUBLIC_GOOGLE_KEY}`}/>
+                                        src={process.env.NEXT_PUBLIC_IMAGENS_GOOGLE == true
+                                            ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=2000&maxheight=300&photo_reference=${item.photo_reference}&key=${process.env.NEXT_PUBLIC_GOOGLE_KEY}`
+                                            : items[0].img }/>
                                 </Box>
                             ))}
                         </Carrosel>
@@ -123,7 +109,7 @@ export default function DetalhesEstabelecimentos() {
                         <Box sx={{marginTop: 5}}>
                             <Box sx={{display: "flex", alignItems: "start", flexDirection: "column"}}>
                                 <Typography variant="h4">Comentarios</Typography>
-                                <CriacaoComentarios obter={dataComent} inserir={setDataComent} id={id} />
+                                <CriacaoComentarios obter={dataComent} inserir={setDataComent} id={data._id} />
                             </Box>
                             <Box sx={{marginTop: 4}}>
                                 {dataComent.map((comentario, index) => (
@@ -137,4 +123,15 @@ export default function DetalhesEstabelecimentos() {
             }
         </Box>
     )
+}
+
+export const getServerSideProps = async (context) => {
+    const { data } = await requisicaoApi("estabelecimentos/"+context.params.id);
+    const comentarios = await requisicaoApi("comentarios/"+context.params.id);
+    return {
+        props: {
+            data,
+            comentarios: comentarios.data
+        }
+    }
 }

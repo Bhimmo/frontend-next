@@ -68,7 +68,7 @@ export default function Estabelecimentos({data}) {
                 <Container sx={{height: "auto", padding: "35px"}}>
                     <Box sx={{display: "flex", justifyContent: "center", flexWrap: "wrap"}}>
                         {paginacao.paginas[valuePagina].map((esta, index) => (
-                            <Cards level={esta.level_price} telefone={esta.telefone} id={esta._id} nome={esta.nome} stars={esta.rating} starsTotal={esta.rating_total} key={index} />
+                            <Cards fotos={esta.fotos} level={esta.level_price} telefone={esta.telefone} id={esta._id} nome={esta.nome} stars={esta.rating} starsTotal={esta.rating_total} key={index} />
                         ))}
                         {paginacao.paginas[0].length <= 0 &&
                             <Alert icon={<Close />} severity="error" sx={{marginTop: 5, marginBottom: 5}}>

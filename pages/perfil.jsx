@@ -14,7 +14,7 @@ export default function Perfil(props) {
     const data = props.data;
     const [nomeEdit, setNomeEdit] = useState(false);
     const [open, setOpen] = useState(false);
-    const [eventoCriado, setEventoCriado] = useState({open: false, vertical: "bottom", horizontal: "center"})
+    const [eventoCriado, setEventoCriado] = useState({open: false, color: "success", vertical: "bottom", horizontal: "center", mensagem: "Evento criado — já está disponível na lista de eventos!"});
     const { vertical, horizontal } = eventoCriado;
     const [imgPerfil, setImgPerfil] = useState();
     const [errorImagem, setErrorImagem]= useState(false);
@@ -36,7 +36,7 @@ export default function Perfil(props) {
         }
     }
     function fecharNotificacaoCriacao() {
-        setEventoCriado({open: false, vertical: "bottom", horizontal: "center"})
+        setEventoCriado({open: false, color: "success", vertical: "bottom", horizontal: "center", mensagem: ""});
     }
 
     async function verImage(event) {
@@ -67,7 +67,6 @@ export default function Perfil(props) {
                 <title>Perfil - Turismo campo mourao</title>
             </Head>
             <Header />
-            {data && data._id &&
             <Container sx={{display: "flex", alignItems: "center", flexDirection: "column", marginTop: 5}}>
                 <Avatar variant="rounded" onChange={verImage} src={imagemMostrar} sx={{width: "200px", height: "200px"}} />
                 <Box sx={{marginBottom: 2, width: 200, display: "flex", justifyContent: "space-around"}}>
@@ -109,8 +108,8 @@ export default function Perfil(props) {
                     onClose={fecharNotificacaoCriacao}
                     key={vertical + horizontal}
                     autoHideDuration={5000}>
-                    <Alert sx={{marginTop: 5}} severity="success">
-                        Evento criado — <strong>já está disponível na lista de eventos!</strong>
+                    <Alert sx={{marginTop: 5}} severity={eventoCriado.color}>
+                        {eventoCriado.mensagem}
                     </Alert>
                 </Snackbar>
             
@@ -126,7 +125,6 @@ export default function Perfil(props) {
                     </Box>
                 }
             </Container>
-            }
         </Box>
     )
 }

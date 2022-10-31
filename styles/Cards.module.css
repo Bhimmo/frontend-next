@@ -11,17 +11,17 @@
     animation: slide1 1s ease-in-out infinite;
 }
 
-.imgEstabelecimentos {
-    width: 25vh;
-    height: 100%;
-    background-image: url("../public/images/hotel.jpg");
-    background-size: cover;
-    border-radius: 5px 0px 0px 5px;
-}
-
 .divCard:hover {
     transition-duration: 1s;
     transform: translate(0px, -5px);
+}
+
+/* Card Agenda */
+.cardAgenda {
+    transition: all 0.5s;
+}
+.cardAgenda:hover {
+    transform: translateX(5%);
 }
 
 @keyframes slide1 {

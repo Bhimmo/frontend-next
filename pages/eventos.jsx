@@ -74,7 +74,7 @@ export default function Eventos({data}) {
                 <Box>
                     <Container sx={{display: "flex", flexWrap: "wrap", justifyContent: "center"}}>
                         {dados.paginas[valuePagina].map((evento, index) => (
-                            <Card key={index} id={evento._id} dataEvento={evento.dataInicial} nome={evento.nome} />
+                            <Card key={index} foto={evento.foto} id={evento._id} dataEvento={evento.dataInicial} nome={evento.nome} />
                         ))}
                         {dados.paginas[0].length <= 0 &&
                             <Alert icon={<Close />} severity="error" sx={{marginTop: 5, marginBottom: 5}}>

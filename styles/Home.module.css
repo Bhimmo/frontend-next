@@ -1,17 +1,9 @@
-.divImage {
-    height: 70vh;
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-    border-radius: 8px 0px 40px 40px;
+.pontoTurismo {
+    transition: all 0.25s;
 }
-.imagemHome {
-    height: 100%;
-    border-radius: 0px 0px 40px 40px;
-    background-image: url("../public/images/igreja_remaster.jpg");
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: bottom;
+.pontoTurismo:hover {
+    transform: translateY(-5%);
 }
-
 .linha {
     height: 1px;
     width: 120px;
