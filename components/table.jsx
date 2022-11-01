@@ -1,10 +1,11 @@
-import { ArrowDownward, Close, Delete, Edit, Check, Stop, Cancel } from "@mui/icons-material";
+import { ArrowDownward, Close, Delete, Edit, Check, Stop, Cancel, Add } from "@mui/icons-material";
 import { Box, IconButton, TableCell, TableHead, Toolbar, Tooltip, Typography, TableRow, Checkbox, TableBody, Table, Paper, createTheme, ThemeProvider, TableContainer, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, LinearProgress, CircularProgress, Fab } from "@mui/material";
 import { useState } from "react";
 import { deleteEvento } from "../hooks/eventos/deletar";
 import { updateEvento } from "../hooks/eventos/salvar";
 import { arrumarDate, arrumarValor, arrumarDateInput } from "../hooks/geral";
 import Input from "./input";
+import InserirImagens from "./eventos/modal/inserirImagens";
 
 function ComponentData({data}) {
     const dataArrumada = arrumarDate(data);
@@ -128,6 +129,7 @@ export default function TableEventos({eventos}){
     const [eventoSelectionado, setEventoSelecionado] = useState([]);
     const [eventoEditarModal, setEventoEditarModal] = useState(false);
     const [eventoParaEditar, setEventoParaEditar] = useState();
+    const [eventoImagensModal, setEventoImagensModal] = useState(false);
 
     function editarEvento() {
         setEventoEditarModal(true);
@@ -136,8 +138,11 @@ export default function TableEventos({eventos}){
     function fecharModal() {
         eventoClicado(null,eventoSelectionado[0])
         setEventoEditarModal(false);
-        setEventoParaEditar()
-        
+        setEventoParaEditar()  
+    }
+
+    function inserirImg() {
+        setEventoImagensModal(!eventoImagensModal);
     }
 
     async function deletarEvento() {
@@ -170,6 +175,7 @@ export default function TableEventos({eventos}){
     return (
         <Box sx={{marginTop: 5}}>
             <ModalEditarEvento open={eventoEditarModal} onClose={fecharModal} evento={eventoParaEditar} />
+            <InserirImagens evento={evento[eventoSelectionado]} open={eventoImagensModal} setOpen={setEventoImagensModal} />
             <TableContainer component={Paper} sx={{backgroundColor: "#AEDCC0", width: {md: 1000, xs: 300}}}>
                 <Toolbar sx={{
                     ...(eventoSelectionado.length > 0 && {
@@ -191,9 +197,14 @@ export default function TableEventos({eventos}){
                                         <Delete />
                                 </IconButton>
                             </Tooltip>
-                            <Tooltip title="Deletar evento  ">
+                            <Tooltip title="Editar evento  ">
                                 <IconButton onClick={editarEvento}>
                                         <Edit />
+                                </IconButton>
+                            </Tooltip>
+                            <Tooltip title="Inserir imagens  ">
+                                <IconButton onClick={inserirImg}>
+                                        <Add />
                                 </IconButton>
                             </Tooltip>
                         </>

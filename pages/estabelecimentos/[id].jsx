@@ -92,10 +92,10 @@ export default function DetalhesEstabelecimentos({data, comentarios}) {
                             </Paper>
                             {/* Avaliacoes */}
                             <Paper sx={{paddingTop: 2, backgroundColor: "#F9F9F9", marginTop: 5, width: "350px", maxWidth: "400px", height: "100%"}}>
-                                <Typography sx={{textAlign: "center"}} variant="h4">Avaliacoes</Typography>
+                                <Typography sx={{textAlign: "center"}} variant="h4">Avaliações</Typography>
                                 <Box sx={{marginTop: 2, padding: 3, display: "flex", backgroundColor: "#52AA5E", justifyContent: "center", alignItems: "center"}}>
                                     <Rating precision={0.5} value={data.rating} readOnly />
-                                    <Typography sx={{color: "#fff"}}> / {data.rating_total} avaliacoes</Typography>
+                                    <Typography sx={{color: "#fff"}}> / {data.rating_total} avaliações</Typography>
                                 </Box>
                             </Paper>
                         </Box>
@@ -108,7 +108,7 @@ export default function DetalhesEstabelecimentos({data, comentarios}) {
                         {/* Comentarios */}
                         <Box sx={{marginTop: 5}}>
                             <Box sx={{display: "flex", alignItems: "start", flexDirection: "column"}}>
-                                <Typography variant="h4">Comentarios</Typography>
+                                <Typography variant="h4">Comentários</Typography>
                                 <CriacaoComentarios obter={dataComent} inserir={setDataComent} id={data._id} />
                             </Box>
                             <Box sx={{marginTop: 4}}>

@@ -1,6 +1,6 @@
 import Header from "../components/header";
 import Footer from "../components/footer";
-import { Box, Card, CardContent, CardMedia, Container, Tab, Tabs, Typography } from "@mui/material";
+import { Box, Card, CardContent, CardMedia, Container, Typography } from "@mui/material";
 import { requisicaoApi } from "../hooks/useFecth";
 import ApresentacaoRestaurantes from "../components/cards/restaurantes/apresentacao";
 import ApresentacaoHoteis from "../components/cards/hoteis/apresentacao";
@@ -93,7 +93,7 @@ export default function Home({data, eventosSemana}) {
                         <Typography sx={{fontWeight: "bold", color: "#1f1b2d"}} variant="h4">TURISMO</Typography>
                     </Box>
 
-                    <Card onClick={() => {window.location.href = "parque-lago"}} sx={{marginTop: "45px", cursor: "pointer"}} className={styles.pontoTurismo}>
+                    <Card onClick={() => {window.location.href = "parque-lago"}} className={styles.pontoTurismo}>
                         <CardMedia
                             component="img"
                             sx={{width: "100%", height: 200}}

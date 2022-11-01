@@ -9,7 +9,7 @@ import { useState } from "react";
 import { Home, LocalAtm, Web } from "@mui/icons-material";
 import Head from "next/head";
 
-export default function DetalhesEventos({data, comentarios}) {
+export default function DetalhesEventos({data, comentarios, imagens}) {
     const [dataComent, setDataComent] = useState(comentarios);
 
     var color = "primary";
@@ -43,14 +43,22 @@ export default function DetalhesEventos({data, comentarios}) {
                 </Box>
 
                 <Carrosel sx={{marginTop: 5, width: "100%"}}>
-                    <Box sx={{display: "flex", justifyContent: "center"}}>
-                        <img alt="Eventos" src={data.foto} style={{maxHeight: 300, maxWidth: 300}} />
-                    </Box>
+                    {imagens.length > 0 ?
+                        imagens.map((item, i) => (
+                            <Box key={i} sx={{display: "flex", justifyContent: "center"}}>
+                                <img alt="Eventos" src={item.url} style={{maxHeight: 300, maxWidth: 300}} />
+                            </Box>
+                        ))
+                    : (
+                        <Box sx={{display: "flex", justifyContent: "center"}}>
+                            <img alt="Eventos" src={data.foto} style={{maxHeight: 300, maxWidth: 300}} />
+                        </Box>
+                    )}
                 </Carrosel>
                 <Divider sx={{marginTop: 5}} />
                 <Box sx={{display: "flex", justifyContent: "space-around", flexWrap: "wrap"}}>
                     <Paper sx={{padding: 5, backgroundColor: "#CDF0EA", marginTop: 5, maxWidth: "500px"}}>
-                        <Typography variant="h4">Descricao</Typography>
+                        <Typography variant="h4">Descrição</Typography>
                         <Typography variant="body2">{data.descricao}</Typography>
                     </Paper>
 
@@ -78,7 +86,7 @@ export default function DetalhesEventos({data, comentarios}) {
                 {/* Comentarios */}
                 <Box sx={{marginTop: 5}}>
                     <Box sx={{display: "flex", alignItems: "start", flexDirection: "column"}}>
-                        <Typography variant="h4">Comentarios</Typography>
+                        <Typography variant="h4">Comentários</Typography>
                         <CriacaoComentarios obter={dataComent} inserir={setDataComent} id={data._id} />
                     </Box>
                     <Box sx={{marginTop: 4}}>
@@ -96,11 +104,23 @@ export default function DetalhesEventos({data, comentarios}) {
 
 export const getServerSideProps = async (context) => {
     const { data } = await requisicaoApi("eventos/"+context.params.id);
+    
+    if (!data) {
+        return {
+            redirect: {
+                destination: "/",
+                permanent: false
+            }
+        }
+    }
     const comentarios = await requisicaoApi("comentarios/"+context.params.id);
+    const imagens = await requisicaoApi("upload/images/eventos/"+context.params.id);
+
     return {
         props: {
             data,
-            comentarios: comentarios.data
+            comentarios: comentarios.data,
+            imagens: imagens.data
         }
     }
 }

@@ -1,4 +1,4 @@
-import { Alert, Box, Button, createTheme, Rating, ThemeProvider } from "@mui/material";
+import { Alert, Box, Button, createTheme, Rating, ThemeProvider, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import Input from "../input";
 import { salvarComentario } from "../../hooks/comentarios/avaliacao";
@@ -45,6 +45,7 @@ export default function CriacaoComentario(props) {
                 <Box sx={{backgroundColor: "#52AA5E", padding: 2, borderRadius: 3}}>
                     <form onSubmit={comentar}>
                         <ThemeProvider theme={threme} >
+                            <Typography variant="body1" sx={{color: "#fff", textAlign: "center", marginBottom: 1}}>Faça sua avaliação</Typography>
                             <Box sx={{display: "flex", justifyContent: "center"}}>
                                 <Rating sx={{color: "#F2D388"}} name="estrelas" value={valueRating} onChange={(event, newValue) => {setValueRating(newValue)}} />
                             </Box>
@@ -53,12 +54,12 @@ export default function CriacaoComentario(props) {
                                     required={true}
                                     onChange={(v, nv) => {setValueText(nv)}}
                                     value={valueText}
-                                    placeholder="Descreva sua experiencia"
+                                    placeholder="Descreva sua experiência"
                                     variant="filled"
                                     multiline={true}
                                     id="comentario"
                                     name="comentario"
-                                    label="Comentario"
+                                    label="Comentário"
                                     type="text"
                                     focused={true} />
                             </Box>

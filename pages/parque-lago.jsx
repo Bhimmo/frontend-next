@@ -6,7 +6,7 @@ import Header from "../components/header";
 var itensImagens = [
     {img: "https://media.tribunadointerior.com.br/2021/06/b04df131-608d4d73855fa-parque-do-lago.jpg"},
     {img: "https://blogdoraoni.com/wp-content/uploads/2018/01/thumbnail_parque-do-lago-2-800x534.jpg"},
-    {img: "http://photos.wikimapia.org/p/00/00/13/72/74_big.jpg"}
+    {img: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/11/5a/8e/9e/catedral-sao-jose.jpg?w=700&h=500&s=1"}
 ];
 
 export default function ParqueLago() {

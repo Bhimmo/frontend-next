@@ -1,5 +1,7 @@
 .pontoTurismo {
     transition: all 0.25s;
+    margin-top: 45px;
+    cursor: pointer
 }
 .pontoTurismo:hover {
     transform: translateY(-5%);
