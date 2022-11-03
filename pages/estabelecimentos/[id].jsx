@@ -4,11 +4,9 @@ import Footer from "../../components/footer";
 import Carrosel from "react-material-ui-carousel";
 import CriacaoComentarios from "../../components/comentario/criacao";
 import Comentarios from "../../components/comentario/listar";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
 import { useState } from "react";
-import useFetch, { requisicaoApi } from "../../hooks/useFecth";
-import { ArrowForwardIos, AttachMoney, CheckBoxOutlineBlank, DeliveryDining, Filter, Language, Phone, Signpost } from "@mui/icons-material";
+import { requisicaoApi } from "../../hooks/useFecth";
+import {AttachMoney, DeliveryDining, Filter, Language, Phone, Signpost } from "@mui/icons-material";
 import Head from "next/head";
 import GoogleMaps from "../../components/goggleMaps";
 
