@@ -125,6 +125,14 @@ export default function DetalhesEstabelecimentos({data, comentarios}) {
 
 export const getServerSideProps = async (context) => {
     const { data } = await requisicaoApi("estabelecimentos/"+context.params.id);
+    if (!data) {
+        return {
+            redirect: {
+                destination: "/",
+                permanent: false
+            }
+        }
+    }
     const comentarios = await requisicaoApi("comentarios/"+context.params.id);
     return {
         props: {
