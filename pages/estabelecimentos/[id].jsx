@@ -53,7 +53,7 @@ export default function DetalhesEstabelecimentos({data, comentarios}) {
                                     <img
                                         style={{backgroundImage: "cover"}}
                                         alt="Imagem referencia google"
-                                        src={process.env.NEXT_PUBLIC_IMAGENS_GOOGLE == true
+                                        src={process.env.NEXT_PUBLIC_IMAGENS_GOOGLE == "true"
                                             ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=2000&maxheight=300&photo_reference=${item.photo_reference}&key=${process.env.NEXT_PUBLIC_GOOGLE_KEY}`
                                             : items[0].img }/>
                                 </Box>

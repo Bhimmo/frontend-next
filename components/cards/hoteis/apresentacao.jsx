@@ -4,7 +4,7 @@ import styles from "../../../styles/Cards.module.css";
 
 export default function ApresentacaoHoteis({id, nome, stars, fotos}) {
     var imagem;
-    if (fotos[0] && process.env.NEXT_PUBLIC_IMAGENS_GOOGLE == true) {
+    if (fotos[0] && process.env.NEXT_PUBLIC_IMAGENS_GOOGLE == "true") {
         imagem = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=1000&photo_reference=${fotos[0].photo_reference}&key=${process.env.NEXT_PUBLIC_GOOGLE_KEY}`;
     } else {
         imagem = "/images/zyro-image2.png"

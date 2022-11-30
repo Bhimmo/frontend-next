@@ -8,11 +8,11 @@ export default function CardsEstabelecimentos({id, nome, stars, starsTotal, tele
     }
     
     var imagem;
-    if (fotos[0] && process.env.NEXT_PUBLIC_IMAGENS_GOOGLE == true) {
+    if (fotos[0] && process.env.NEXT_PUBLIC_IMAGENS_GOOGLE == "true") {
         console.log("CAIU");
         imagem = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=1000&photo_reference=${fotos[0].photo_reference}&key=${process.env.NEXT_PUBLIC_GOOGLE_KEY}`;
     } else {
-        imagem = "/images/hotel.jpg"
+        imagem = "/images/fotoRestaurante.jpg"
     }
     
     return (
