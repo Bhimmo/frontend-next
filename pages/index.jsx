@@ -37,7 +37,7 @@ export default function Home({data, eventosSemana, error}) {
 
                     <Container sx={{padding: "35px 0"}}>
                         <Box>
-                            <Typography sx={{textAlign: "center", fontWeight: "bold", color: "#1f1b2d"}} variant="h3">Explore lugares de Campo Mourao</Typography>
+                            <Typography sx={{textAlign: "center", fontWeight: "bold", color: "#1f1b2d"}} variant="h3">Explore lugares de Campo Mourão</Typography>
                             <Typography sx={{textAlign: "center", marginTop: "15px", color: "#666276"}} variant="h6">Quer conhecer mais?</Typography>
                         </Box>
                     </Container>

@@ -35,7 +35,7 @@ export default function Footer() {
                     <Typography sx={{color: "#fff", fontWeight: "bold", marginBottom: "15px"}} variant="h5">Portal</Typography>
                     <a className={styles.itemFooter} href="/sobre"><Typography sx={{color: "#fff", padding: "5px 0px"}} variant="body2">Sobre nós</Typography></a>
                 </Box>
-                <Box>
+                {/* <Box>
                     <Typography sx={{color: "#fff", fontWeight: "bold", marginBottom: "15px"}} variant="h5">Avisos</Typography>
                     <form className={styles.formFooter} onSubmit={enviar}>
                         <TextField 
@@ -60,7 +60,7 @@ export default function Footer() {
                         </Box>
                     </form>
                     <Typography sx={{color: "#fff", padding: "5px 0px"}} variant="body2">Para receber notificações das novidades</Typography>
-                </Box>
+                </Box> */}
             </Container>
             {envio && 
                 <Snackbar
