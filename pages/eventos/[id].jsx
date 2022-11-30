@@ -12,14 +12,27 @@ import Head from "next/head";
 export default function DetalhesEventos({data, comentarios, imagens}) {
     const [dataComent, setDataComent] = useState(comentarios);
 
-    var color = "primary";
-    if (data.status === "Encerrado") {
+    let statusData = "Andamento";
+    let color = "warning";
+
+    let dataAtual = new Date();
+    let dataFinal = new Date(data.dataFinal);
+    let dataInicial = new Date(data.dataInicial);
+
+    if (dataAtual > dataFinal) {
+        statusData = "Encerrado";
+    } else if (dataAtual < dataInicial) {
+        statusData = "Pendente"
+    }
+
+    
+    if (statusData === "Encerrado") {
         color = "error";
-    } else {
-        color = "warning";
+    } else if (statusData === "Pendente") {
+        color = "primary";
     }
     var status = {
-        status: data.status,
+        status: statusData,
         color: color
     }
 
